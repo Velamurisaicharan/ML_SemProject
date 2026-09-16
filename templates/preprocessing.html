@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Crop Yield - Preprocessing
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='preprocessing.css'
+          ) }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     SIDEBAR
+====================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        🌾
+
+        <div>
+
+            <strong>
+                CropYield AI
+            </strong>
+
+            <small>
+                Analytics Studio
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="{{ url_for('data_loading') }}"
+           class="{% if active == 'data-loading' %}active{% endif %}">
+
+            📂
+
+            Data Loading
+
+        </a>
+
+
+        <a href="{{ url_for('eda_page') }}"
+           class="{% if active == 'eda' %}active{% endif %}">
+
+            📊
+
+            EDA
+
+        </a>
+
+
+        <a href="{{ url_for('preprocessing_page') }}"
+           class="{% if active == 'preprocessing' %}active{% endif %}">
+
+            ⚙
+
+            Preprocessing
+
+        </a>
+
+
+        <a class="disabled">
+
+            🤖
+
+            Model
+
+        </a>
+
+
+        <a class="disabled">
+
+            📈
+
+            Results
+
+        </a>
+
+    </nav>
+
+
+    <div class="status">
+
+        <span></span>
+
+        <div>
+
+            <strong>
+                Pipeline Ready
+            </strong>
+
+            <small>
+                Crop dataset connected
+            </small>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ======================================================
+     MAIN
+====================================================== -->
+
+<main class="main">
+
+
+    <header class="header">
+
+        <div>
+
+            <div class="breadcrumb">
+                Dashboard / Preprocessing
+            </div>
+
+            <h1>
+                Crop Data Preprocessing
+            </h1>
+
+            <p>
+                Clean, encode and scale agricultural
+                features for crop-yield prediction.
+            </p>
+
+        </div>
+
+
+        <button
+            class="run-button"
+            onclick="runProcessing()">
+
+            ▶ Run Preprocessing
+
+        </button>
+
+    </header>
+
+
+
+    {% if error %}
+
+    <div class="error">
+
+        <strong>
+            Preprocessing Error
+        </strong>
+
+        <p>
+            {{ error }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+
+    {% if results %}
+
+
+    <!-- ==================================================
+         SUMMARY CARDS
+    ================================================== -->
+
+    <section class="summary">
+
+
+        <div class="card">
+
+            <div class="icon blue">
+                📋
+            </div>
+
+            <div>
+
+                <small>
+                    Original Rows
+                </small>
+
+                <strong>
+                    {{ "{:,}".format(
+                        results.original_rows
+                    ) }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon purple">
+                ▦
+            </div>
+
+            <div>
+
+                <small>
+                    Original Features
+                </small>
+
+                <strong>
+                    {{ results.original_columns }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon orange">
+                !
+            </div>
+
+            <div>
+
+                <small>
+                    Missing Values
+                </small>
+
+                <strong>
+                    {{ results.original_missing }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="icon green">
+                ✓
+            </div>
+
+            <div>
+
+                <small>
+                    Final Features
+                </small>
+
+                <strong>
+                    {{ results.final_columns }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         MODULE BUTTONS
+    ================================================== -->
+
+    <section class="modules">
+
+        <h2>
+            Preprocessing Modules
+        </h2>
+
+        <p>
+            Select a preprocessing operation.
+        </p>
+
+
+        <div class="module-buttons">
+
+
+            <button
+                class="module active"
+                onclick="showSection('quality', this)">
+
+                🔍 Data Quality
+
+            </button>
+
+
+            <button
+                class="module"
+                onclick="showSection('encoding', this)">
+
+                🔤 Encoding
+
+            </button>
+
+
+            <button
+                class="module"
+                onclick="showSection('outliers', this)">
+
+                📌 Outliers
+
+            </button>
+
+
+            <button
+                class="module"
+                onclick="showSection('scaling', this)">
+
+                📏 Scaling
+
+            </button>
+
+
+            <button
+                class="module"
+                onclick="showSection('target', this)">
+
+                🎯 Target
+
+            </button>
+
+
+            <button
+                class="module"
+                onclick="showSection('final', this)">
+
+                📊 Final Dataset
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         DATA QUALITY
+    ================================================== -->
+
+    <section
+        id="quality"
+        class="section active-section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>
+                    STEP 01
+                </span>
+
+                <h2>
+                    Data Quality Check
+                </h2>
+
+                <p>
+                    Check missing values and duplicate records.
+                </p>
+
+            </div>
+
+
+            <div class="badge">
+                ✓ Checked
+            </div>
+
+        </div>
+
+
+        <div class="quality-grid">
+
+
+            <div class="quality-card">
+
+                <h3>
+                    Missing Values
+                </h3>
+
+                <strong>
+                    {{ results.original_missing }}
+                </strong>
+
+                {% if results.original_missing == 0 %}
+
+                <p class="good">
+                    ✓ No missing values found
+                </p>
+
+                {% else %}
+
+                <p>
+                    Missing values detected
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="quality-card">
+
+                <h3>
+                    Duplicate Rows
+                </h3>
+
+                <strong>
+                    {{ results.original_duplicates }}
+                </strong>
+
+                {% if results.original_duplicates == 0 %}
+
+                <p class="good">
+                    ✓ No duplicates found
+                </p>
+
+                {% else %}
+
+                <p>
+                    Duplicates removed
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="quality-card">
+
+                <h3>
+                    Target Variable
+                </h3>
+
+                <strong>
+                    Yield
+                </strong>
+
+                <p>
+                    Regression target
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>
+                Dataset Columns
+            </h3>
+
+            <div class="tags">
+
+                {% for item in results.missing_table %}
+
+                <span>
+                    {{ item.column }}
+                </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         ENCODING
+    ================================================== -->
+
+    <section
+        id="encoding"
+        class="section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>
+                    STEP 02
+                </span>
+
+                <h2>
+                    Categorical Encoding
+                </h2>
+
+                <p>
+                    Convert crop, season and state
+                    categories into numerical features.
+                </p>
+
+            </div>
+
+
+            <div class="badge">
+                ✓ One-Hot Encoded
+            </div>
+
+        </div>
+
+
+        <div class="encoding-grid">
+
+
+            <div class="encoding-card">
+
+                <div class="number">
+                    01
+                </div>
+
+                <h3>
+                    Crop
+                </h3>
+
+                <p>
+                    One-Hot Encoding
+                </p>
+
+                <strong>
+                    Crop categories
+                </strong>
+
+            </div>
+
+
+            <div class="encoding-card">
+
+                <div class="number">
+                    02
+                </div>
+
+                <h3>
+                    Season
+                </h3>
+
+                <p>
+                    One-Hot Encoding
+                </p>
+
+                <strong>
+                    Seasonal categories
+                </strong>
+
+            </div>
+
+
+            <div class="encoding-card">
+
+                <div class="number">
+                    03
+                </div>
+
+                <h3>
+                    State
+                </h3>
+
+                <p>
+                    One-Hot Encoding
+                </p>
+
+                <strong>
+                    State categories
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>
+                Numerical Features
+            </h3>
+
+            <div class="tags">
+
+                {% for column in
+                   results.numerical_features %}
+
+                <span>
+                    {{ column }}
+                </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>
+                Generated Encoded Features
+            </h3>
+
+            <p class="subtitle">
+                One-hot encoded columns generated from
+                categorical variables.
+            </p>
+
+            <div class="tags">
+
+                {% for column in
+                   results.encoded_columns %}
+
+                <span>
+                    {{ column }}
+                </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        {% if results.encoding_plot %}
+
+        <div class="panel chart">
+
+            <h3>
+                Transformation Summary
+            </h3>
+
+            <img
+                src="data:image/png;base64,
+                {{ results.encoding_plot }}">
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ==================================================
+         OUTLIERS
+    ================================================== -->
+
+    <section
+        id="outliers"
+        class="section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>
+                    STEP 03
+                </span>
+
+                <h2>
+                    Outlier Detection
+                </h2>
+
+                <p>
+                    IQR-based outlier detection is applied
+                    only to input numerical features.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if results.outlier_details %}
+
+        <div class="panel">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        Feature
+                    </th>
+
+                    <th>
+                        Train Outliers
+                    </th>
+
+                    <th>
+                        Test Outliers
+                    </th>
+
+                    <th>
+                        Percentage
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for item in
+                   results.outlier_details %}
+
+                <tr>
+
+                    <td>
+                        {{ item.column }}
+                    </td>
+
+                    <td>
+                        {{ item.train_count }}
+                    </td>
+
+                    <td>
+                        {{ item.test_count }}
+                    </td>
+
+                    <td>
+                        {{ item.percentage }}%
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% if results.outlier_plot %}
+
+        <div class="panel chart">
+
+            <img
+                src="data:image/png;base64,
+                {{ results.outlier_plot }}">
+
+        </div>
+
+        {% endif %}
+
+
+        {% else %}
+
+        <div class="empty">
+
+            ✓
+
+            <h3>
+                No input-feature outliers detected
+            </h3>
+
+        </div>
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         SCALING
+    ================================================== -->
+
+    <section
+        id="scaling"
+        class="section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>
+                    STEP 04
+                </span>
+
+                <h2>
+                    Feature Scaling
+                </h2>
+
+                <p>
+                    Numerical input features are standardized
+                    using StandardScaler.
+                </p>
+
+            </div>
+
+
+            <div class="badge">
+                ✓ Standardized
+            </div>
+
+        </div>
+
+
+        <div class="scaling-flow">
+
+
+            <div>
+
+                <small>
+                    Method
+                </small>
+
+                <strong>
+                    StandardScaler
+                </strong>
+
+            </div>
+
+
+            <b>
+                →
+            </b>
+
+
+            <div>
+
+                <small>
+                    Mean
+                </small>
+
+                <strong>
+                    ≈ 0
+                </strong>
+
+            </div>
+
+
+            <b>
+                →
+            </b>
+
+
+            <div>
+
+                <small>
+                    Std. Deviation
+                </small>
+
+                <strong>
+                    ≈ 1
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>
+                Before vs After Scaling
+            </h3>
+
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        Feature
+                    </th>
+
+                    <th>
+                        Before Mean
+                    </th>
+
+                    <th>
+                        Before Std
+                    </th>
+
+                    <th>
+                        After Mean
+                    </th>
+
+                    <th>
+                        After Std
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for item in
+                   results.scaling_statistics %}
+
+                <tr>
+
+                    <td>
+                        {{ item.feature }}
+                    </td>
+
+                    <td>
+                        {{ item.before_mean }}
+                    </td>
+
+                    <td>
+                        {{ item.before_std }}
+                    </td>
+
+                    <td>
+                        {{ item.after_mean }}
+                    </td>
+
+                    <td>
+                        {{ item.after_std }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% if results.scaling_plot %}
+
+        <div class="panel chart">
+
+            <img
+                src="data:image/png;base64,
+                {{ results.scaling_plot }}">
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ==================================================
+         TARGET
+    ================================================== -->
+
+    <section
+        id="target"
+        class="section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>
+                    TARGET VARIABLE
+                </span>
+
+                <h2>
+                    Crop Yield
+                </h2>
+
+                <p>
+                    Yield is retained as the regression target.
+                </p>
+
+            </div>
+
+            <div class="target-badge">
+                Y
+            </div>
+
+        </div>
+
+
+        <div class="target-grid">
+
+
+            <div class="target-card">
+
+                <small>
+                    Mean Yield
+                </small>
+
+                <strong>
+                    {{ results.target_statistics.mean }}
+                </strong>
+
+            </div>
+
+
+            <div class="target-card">
+
+                <small>
+                    Standard Deviation
+                </small>
+
+                <strong>
+                    {{ results.target_statistics.std }}
+                </strong>
+
+            </div>
+
+
+            <div class="target-card">
+
+                <small>
+                    Minimum
+                </small>
+
+                <strong>
+                    {{ results.target_statistics.min }}
+                </strong>
+
+            </div>
+
+
+            <div class="target-card">
+
+                <small>
+                    Maximum
+                </small>
+
+                <strong>
+                    {{ results.target_statistics.max }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="target-note">
+
+            <strong>
+                Important:
+            </strong>
+
+            Yield is not included in feature scaling
+            because it is the prediction target.
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         FINAL DATASET
+    ================================================== -->
+
+    <section
+        id="final"
+        class="section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>
+                    FINAL STEP
+                </span>
+
+                <h2>
+                    Machine Learning Ready Dataset
+                </h2>
+
+                <p>
+                    Final transformed crop-yield dataset.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('download_crop_processed') }}"
+                class="download">
+
+                ↓ Download CSV
+
+            </a>
+
+        </div>
+
+
+        <div class="final-grid">
+
+
+            <div>
+
+                <small>
+                    Training Rows
+                </small>
+
+                <strong>
+                    {{ "{:,}".format(
+                        results.train_rows
+                    ) }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <small>
+                    Testing Rows
+                </small>
+
+                <strong>
+                    {{ "{:,}".format(
+                        results.test_rows
+                    ) }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <small>
+                    Final Features
+                </small>
+
+                <strong>
+                    {{ results.final_columns }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <small>
+                    Missing
+                </small>
+
+                <strong>
+                    {{ results.final_missing }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>
+                Processed Dataset Preview
+            </h3>
+
+            <p class="subtitle">
+                First 10 rows
+            </p>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        {% for column in
+                           results.preview_columns %}
+
+                        <th>
+                            {{ column }}
+                        </th>
+
+                        {% endfor %}
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for row in results.preview %}
+
+                    <tr>
+
+                        {% for column in
+                           results.preview_columns %}
+
+                        <td>
+                            {{ row[column] }}
+                        </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    {% endif %}
+
+</main>
+
+
+
+<!-- ======================================================
+     LOADING
+====================================================== -->
+
+<div
+    id="loading"
+    class="loading">
+
+    <div class="loading-box">
+
+        <div class="spinner"></div>
+
+        <h3>
+            Processing Crop Dataset
+        </h3>
+
+        <p>
+            Encoding, detecting outliers
+            and scaling features...
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+function showSection(id, button) {
+
+    const sections =
+        document.querySelectorAll(
+            ".section"
+        );
+
+    sections.forEach(
+        function(section) {
+
+            section.classList.remove(
+                "active-section"
+            );
+
+        }
+    );
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".module"
+        );
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById(id)
+        .classList.add(
+            "active-section"
+        );
+
+
+    button.classList.add(
+        "active"
+    );
+
+}
+
+
+function runProcessing() {
+
+    document
+        .getElementById("loading")
+        .classList.add("show");
+
+
+    setTimeout(
+        function() {
+
+            window.location.href =
+                "{{ url_for(
+                    'preprocessing_page'
+                ) }}";
+
+        },
+        300
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

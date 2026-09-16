@@ -1,0 +1,942 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   TASK 5 - CROP DISTRIBUTION
+========================================================= */
+
+.task5-section {
+    width: 100%;
+}
+
+.task5-section .chart-card {
+    width: 100%;
+    height: 500px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    border: 1px solid #dce4ee;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+    overflow: hidden;
+}
+
+
+/* Crop distribution image */
+
+.task5-section .chart-card img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    max-width: 1100px;
+    max-height: 450px;
+
+    object-fit: contain;
+
+    object-position: center;
+}
+
+
+/* =========================================================
+   TASK 6 - NUMERICAL DISTRIBUTIONS
+========================================================= */
+
+.task6-section {
+    width: 100%;
+}
+
+
+/* 2-column layout */
+
+.task6-section .chart-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+/* Individual chart card */
+
+.task6-section .chart-card {
+    width: 100%;
+
+    height: 390px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dce4ee;
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+
+    overflow: hidden;
+}
+
+
+/* Distribution graph */
+
+.task6-section .chart-card img {
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 350px;
+
+    object-fit: contain;
+
+    object-position: center;
+}
+
+
+/* =========================================================
+   TASK 7 - OUTLIER / BOXPLOT ANALYSIS
+========================================================= */
+
+.task7-section {
+    width: 100%;
+}
+
+
+/* 2-column boxplot layout */
+
+.task7-section .chart-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+/* Boxplot card */
+
+.task7-section .chart-card {
+    width: 100%;
+
+    height: 320px;
+
+    padding: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dce4ee;
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+
+    overflow: hidden;
+}
+
+
+/* Boxplot image */
+
+.task7-section .chart-card img {
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 280px;
+
+    object-fit: contain;
+
+    object-position: center;
+}
+
+
+/* =========================================================
+   HOVER EFFECT
+========================================================= */
+
+.task5-section .chart-card,
+.task6-section .chart-card,
+.task7-section .chart-card {
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+
+.task5-section .chart-card:hover,
+.task6-section .chart-card:hover,
+.task7-section .chart-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(31, 58, 95, 0.14);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    /* Task 5 */
+
+    .task5-section .chart-card {
+        height: 430px;
+    }
+
+
+    /* Task 6 */
+
+    .task6-section .chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .task6-section .chart-card {
+        height: 400px;
+    }
+
+
+    /* Task 7 */
+
+    .task7-section .chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .task7-section .chart-card {
+        height: 330px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    /* Task 5 */
+
+    .task5-section .chart-card {
+        height: 320px;
+
+        padding: 10px;
+    }
+
+
+    .task5-section .chart-card img {
+        max-height: 290px;
+    }
+
+
+    /* Task 6 */
+
+    .task6-section .chart-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .task6-section .chart-card {
+        height: 300px;
+
+        padding: 10px;
+    }
+
+
+    .task6-section .chart-card img {
+        max-height: 280px;
+    }
+
+
+    /* Task 7 */
+
+    .task7-section .chart-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .task7-section .chart-card {
+        height: 280px;
+
+        padding: 10px;
+    }
+
+
+    .task7-section .chart-card img {
+        max-height: 260px;
+    }
+
+}
+
+</style>
+
+<div class="page-header">
+
+    <h1>📊 Complete Exploratory Data Analysis</h1>
+
+    <p>
+        Crop Production Dataset Analysis
+    </p>
+
+</div>
+
+
+{% if error %}
+
+<div class="error">
+    ❌ {{ error }}
+</div>
+
+{% endif %}
+
+
+
+{% if results %}
+
+
+<!-- =====================================================
+     1. DATA OVERVIEW
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>1️⃣ Data Overview</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <h3>Rows</h3>
+
+            <strong>
+                {{ results.shape[0] }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>Columns</h3>
+
+            <strong>
+                {{ results.shape[1] }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>Duplicate Rows</h3>
+
+            <strong>
+                {{ results.duplicate_count }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     2. DATA TYPES
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>2️⃣ Data Types</h2>
+
+    <div class="table-wrapper">
+
+        <table class="data-table">
+
+            <thead>
+
+                <tr>
+                    <th>Column</th>
+                    <th>Data Type</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for col, dtype in results.info.dtypes.items() %}
+
+                <tr>
+
+                    <td>
+                        {{ col }}
+                    </td>
+
+                    <td>
+                        {{ dtype }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     3. MISSING VALUES
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>3️⃣ Missing Value Analysis</h2>
+
+    <div class="table-wrapper">
+
+        <table class="data-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Column</th>
+
+                    <th>Missing Count</th>
+
+                    <th>Missing %</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for col in results.missing_count %}
+
+                <tr>
+
+                    <td>
+                        {{ col }}
+                    </td>
+
+                    <td>
+                        {{ results.missing_count[col] }}
+                    </td>
+
+                    <td>
+                        {{ "%.2f"|format(results.missing_percent[col]) }}%
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% if 'missing_heatmap.png' in results.charts %}
+
+    <div class="chart-card">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='charts/missing_heatmap.png'
+            ) }}"
+            alt="Missing Value Heatmap"
+        >
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+
+<!-- =====================================================
+     4. DUPLICATE ROWS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>4️⃣ Duplicate Row Analysis</h2>
+
+    <div class="info-card">
+
+        <h3>Duplicate Records</h3>
+
+        <p>
+            Total duplicate rows:
+            <strong>
+                {{ results.duplicate_count }}
+            </strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     5. CROP DISTRIBUTION
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>5️⃣ Crop Distribution</h2>
+
+    {% if 'crop_distribution.png' in results.charts %}
+
+    <div class="chart-card">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='charts/crop_distribution.png'
+            ) }}"
+            alt="Crop Distribution"
+        >
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+
+<!-- =====================================================
+     6. NUMERICAL DISTRIBUTIONS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>6️⃣ Numerical Feature Distributions</h2>
+
+    <div class="chart-grid">
+
+        {% for c in results.charts %}
+
+            {% if 'distribution.png' in c
+               and c != 'crop_distribution.png' %}
+
+            <div class="chart-card">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='charts/' + c
+                    ) }}"
+                    alt="{{ c }}"
+                >
+
+            </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     7. OUTLIER DETECTION
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>7️⃣ Outlier Detection</h2>
+
+    <div class="chart-grid">
+
+        {% for c in results.charts %}
+
+            {% if 'boxplot.png' in c %}
+
+            <div class="chart-card">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='charts/' + c
+                    ) }}"
+                    alt="{{ c }}"
+                >
+
+            </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     8. CORRELATION
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>8️⃣ Correlation Analysis</h2>
+
+    {% if 'correlation_heatmap.png' in results.charts %}
+
+    <div class="chart-card large-chart">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='charts/correlation_heatmap.png'
+            ) }}"
+            alt="Correlation Heatmap"
+        >
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+
+<!-- =====================================================
+     9. RELATIONSHIP ANALYSIS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>9️⃣ Relationship Analysis</h2>
+
+    <div class="chart-grid">
+
+        {% for c in results.charts %}
+
+            {% if
+                'area_vs_production.png' in c
+                or 'rainfall_vs_yield.png' in c
+                or 'fertilizer_vs_yield.png' in c
+            %}
+
+            <div class="chart-card">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='charts/' + c
+                    ) }}"
+                    alt="{{ c }}"
+                >
+
+            </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     10. CATEGORICAL ANALYSIS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>🔟 Categorical Feature Analysis</h2>
+
+    <div class="chart-grid">
+
+        {% for c in results.charts %}
+
+            {% if
+                'crop_count.png' in c
+                or 'season_count.png' in c
+                or 'state_count.png' in c
+            %}
+
+            <div class="chart-card">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='charts/' + c
+                    ) }}"
+                    alt="{{ c }}"
+                >
+
+            </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     11. SEASON ANALYSIS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>1️⃣1️⃣ Season Analysis</h2>
+
+    {% if 'season_vs_yield.png' in results.charts %}
+
+    <div class="chart-card">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='charts/season_vs_yield.png'
+            ) }}"
+            alt="Season vs Yield"
+        >
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+
+<!-- =====================================================
+     12. STATE ANALYSIS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>1️⃣2️⃣ State-wise Production Analysis</h2>
+
+    <div class="chart-grid">
+
+        {% if 'state_production.png' in results.charts %}
+
+        <div class="chart-card">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='charts/state_production.png'
+                ) }}"
+                alt="State Production"
+            >
+
+        </div>
+
+        {% endif %}
+
+
+        {% if 'state_average_yield.png' in results.charts %}
+
+        <div class="chart-card">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='charts/state_average_yield.png'
+                ) }}"
+                alt="State Average Yield"
+            >
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     13. YEAR-WISE TREND
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>1️⃣3️⃣ Year-wise Production Trend</h2>
+
+    {% if 'yearly_production.png' in results.charts %}
+
+    <div class="chart-card large-chart">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='charts/yearly_production.png'
+            ) }}"
+            alt="Yearly Production"
+        >
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+
+<!-- =====================================================
+     14. YIELD ANALYSIS
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>1️⃣4️⃣ Yield Analysis</h2>
+
+    <div class="chart-grid">
+
+        {% if 'yield_distribution.png' in results.charts %}
+
+        <div class="chart-card">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='charts/yield_distribution.png'
+                ) }}"
+                alt="Yield Distribution"
+            >
+
+        </div>
+
+        {% endif %}
+
+
+        {% if 'yield_by_season.png' in results.charts %}
+
+        <div class="chart-card">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='charts/yield_by_season.png'
+                ) }}"
+                alt="Yield by Season"
+            >
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     15. PAIRPLOT
+===================================================== -->
+
+<section class="eda-section">
+
+    <h2>1️⃣5️⃣ Feature Relationship Pairplot</h2>
+
+    {% if 'pairplot.png' in results.charts %}
+
+    <div class="chart-card pairplot-card">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='charts/pairplot.png'
+            ) }}"
+            alt="Feature Pairplot"
+        >
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+{% else %}
+
+<div class="info-card">
+
+    <h3>EDA Results Not Available</h3>
+
+    <p>
+        Run the EDA analysis to generate the charts.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
