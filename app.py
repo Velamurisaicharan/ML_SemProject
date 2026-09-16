@@ -1,3 +1,10 @@
+import os
+
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+
 from flask import (
     Flask,
     render_template,
@@ -14,6 +21,7 @@ from crop_eda import run_eda
 from crop_preprocessing import (
     run_crop_preprocessing
 )
+from crop_linear_regression import run_crop_linear_regression
 
 
 app = Flask(__name__)
@@ -145,6 +153,67 @@ def download_crop_processed():
         download_name=
         "crop_yield_preprocessed.csv"
 
+    )
+# ============================================================
+# CROP YIELD - LINEAR REGRESSION
+# ============================================================
+
+@app.route("/linear-regression")
+def linear_regression_page():
+
+    error = None
+    results = None
+
+    try:
+
+        results = run_crop_linear_regression()
+
+    except FileNotFoundError as e:
+
+        error = str(e)
+
+    except Exception as e:
+
+        error = (
+            f"{type(e).__name__}: {str(e)}"
+        )
+
+    return render_template(
+
+        "linear_regression.html",
+
+        active="linear-regression",
+
+        results=results,
+
+        error=error
+
+    )
+# ============================================================
+# CROP YIELD - LINEAR REGRESSION
+# ============================================================
+
+
+@app.route("/download-crop-linear-regression")
+def download_crop_linear_regression():
+
+    prediction_file = os.path.join(
+        BASE_DIR,
+        "crop_linear_regression_predictions.csv"
+    )
+
+    if not os.path.exists(prediction_file):
+
+        return (
+            "Crop Yield predictions have not "
+            "been generated yet.",
+            404
+        )
+
+    return send_file(
+        prediction_file,
+        as_attachment=True,
+        download_name="crop_linear_regression_predictions.csv"
     )
 
 
