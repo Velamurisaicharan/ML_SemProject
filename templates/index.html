@@ -50,6 +50,25 @@
         Preprocessing
     </a>
 </li>
+            <li>
+                <a href="/logistic-regression"
+   class="{% if active == 'logistic-regression' %}active{% endif %}">
+    Logistic Regression
+</a>
+            </li>
+            <li>
+                <a
+    href="{{ url_for('trees_page') }}"
+    class="{% if active == 'trees' %}active{% endif %}">
+
+    🌳
+
+    <span>
+        Trees
+    </span>
+
+</a>
+            </li>
             <li class="menu-item disabled">🤖 Model Training (soon)</li>
             <li class="menu-item disabled">📈 Prediction (soon)</li>
         </ul>

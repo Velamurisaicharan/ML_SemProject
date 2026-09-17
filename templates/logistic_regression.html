@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Logistic Regression - Yield Classification
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='logistic_regression.css'
+          ) }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================================
+     NAVBAR
+     ======================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Crop Yield ML System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/data-loading">
+            Data Loading
+        </a>
+
+        <a href="/eda">
+            EDA
+        </a>
+
+        <a href="/preprocessing">
+            Preprocessing
+        </a>
+
+        <a href="/linear-regression">
+            Linear Regression
+        </a>
+
+        <a href="/logistic-regression"
+           class="active">
+            Logistic Regression
+        </a>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- ========================================================
+     HEADER
+     ======================================================== -->
+
+<section class="hero">
+
+    <h1>
+        Logistic Regression
+    </h1>
+
+    <h2>
+        Crop Yield Classification
+    </h2>
+
+    <p>
+
+        Classification of agricultural records
+        into Low Yield and High Yield using
+        Logistic Regression.
+
+    </p>
+
+</section>
+
+
+<!-- ========================================================
+     ERROR
+     ======================================================== -->
+
+{% if error %}
+
+<div class="error-box">
+
+    <strong>Error:</strong>
+
+    {{ error }}
+
+</div>
+
+{% endif %}
+
+
+{% if results %}
+
+
+<!-- ========================================================
+     TARGET
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Target Definition
+    </h2>
+
+    <p>
+
+        Logistic Regression is a classification
+        algorithm. Since <strong>Yield</strong> is
+        continuous, it is converted into two classes
+        using the median yield as the threshold.
+
+    </p>
+
+
+    <div class="formula">
+
+        Yield ≤ Median → Low Yield
+
+        <br><br>
+
+        Yield > Median → High Yield
+
+    </div>
+
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <span>
+                Median Yield
+            </span>
+
+            <strong>
+
+                {{ "%.4f"|format(
+                    results.median_yield
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card low">
+
+            <span>
+                Low Yield
+            </span>
+
+            <strong>
+
+                {{ results.low_yield_count }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card high">
+
+            <span>
+                High Yield
+            </span>
+
+            <strong>
+
+                {{ results.high_yield_count }}
+
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     FEATURES
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Features Used
+    </h2>
+
+
+    <div class="feature-grid">
+
+        {% for feature in results.features %}
+
+        <div class="feature-card">
+
+            {{ feature }}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     PIPELINE
+     ======================================================== -->
+
+
+
+<!-- ========================================================
+     MODEL METRICS
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Model Performance
+    </h2>
+
+
+    <div class="metrics">
+
+
+        <div class="metric">
+
+            <span>
+                Accuracy
+            </span>
+
+            <strong>
+
+                {{ "%.4f"|format(
+                    results.accuracy
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                Precision
+            </span>
+
+            <strong>
+
+                {{ "%.4f"|format(
+                    results.precision
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                Recall
+            </span>
+
+            <strong>
+
+                {{ "%.4f"|format(
+                    results.recall
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                F1 Score
+            </span>
+
+            <strong>
+
+                {{ "%.4f"|format(
+                    results.f1
+                ) }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="metric">
+
+            <span>
+                ROC-AUC
+            </span>
+
+            <strong>
+
+                {{ "%.4f"|format(
+                    results.auc
+                ) }}
+
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     CONFUSION MATRIX
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Confusion Matrix
+    </h2>
+
+
+    {% if results.confusion_matrix %}
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Actual / Predicted
+                </th>
+
+                <th>
+                    Low Yield
+                </th>
+
+                <th>
+                    High Yield
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            <tr>
+
+                <th>
+                    Low Yield
+                </th>
+
+                <td>
+
+                    {{
+                        results.confusion_matrix[0][0]
+                    }}
+
+                </td>
+
+                <td>
+
+                    {{
+                        results.confusion_matrix[0][1]
+                    }}
+
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <th>
+                    High Yield
+                </th>
+
+                <td>
+
+                    {{
+                        results.confusion_matrix[1][0]
+                    }}
+
+                </td>
+
+                <td>
+
+                    {{
+                        results.confusion_matrix[1][1]
+                    }}
+
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    {% endif %}
+
+</section>
+
+
+<!-- ========================================================
+     COEFFICIENTS
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Feature Coefficients
+    </h2>
+
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Feature
+                </th>
+
+                <th>
+                    Coefficient
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        {% for item in results.coefficients %}
+
+            <tr>
+
+                <td>
+                    {{ item.feature }}
+                </td>
+
+                <td>
+
+                    {{ "%.6f"|format(
+                        item.coefficient
+                    ) }}
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</section>
+
+
+<!-- ========================================================
+     PREDICTION FORM
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Predict Yield Category
+    </h2>
+
+
+    <p>
+
+        Enter the values using the same processed
+        scale as the CSV dataset.
+
+    </p>
+
+
+    <form
+        action="/predict-yield"
+        method="POST"
+        class="prediction-form"
+    >
+
+
+        <div class="form-group">
+
+            <label>
+                Crop Year
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="crop_year"
+                required
+                placeholder="Example: -1.0"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Area
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="area"
+                required
+                placeholder="Processed value"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Annual Rainfall
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="rainfall"
+                required
+                placeholder="Processed value"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Fertilizer
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="fertilizer"
+                required
+                placeholder="Processed value"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Pesticide
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="pesticide"
+                required
+                placeholder="Processed value"
+            >
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="predict-button"
+        >
+
+            Predict Yield Category
+
+        </button>
+
+
+    </form>
+
+</section>
+
+
+{% endif %}
+
+
+<!-- ========================================================
+     PREDICTION RESULT
+     ======================================================== -->
+
+{% if prediction %}
+
+<section class="card">
+
+
+    {% if prediction.label == "High Yield" %}
+
+    <div class="prediction-result high-result">
+
+    {% else %}
+
+    <div class="prediction-result low-result">
+
+    {% endif %}
+
+
+        <h2>
+            Prediction Result
+        </h2>
+
+
+        <div class="prediction-label">
+
+            {{ prediction.label }}
+
+        </div>
+
+
+        <div class="probability">
+
+            High Yield Probability:
+
+            {{
+                "%.2f"|format(
+                    prediction.probability * 100
+                )
+            }}%
+
+        </div>
+
+
+        <div class="probability">
+
+            Low Yield Probability:
+
+            {{
+                "%.2f"|format(
+                    prediction.low_probability * 100
+                )
+            }}%
+
+        </div>
+
+
+        <div class="threshold">
+
+            Classification Threshold: 50%
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
+
+
+<!-- ========================================================
+     DOWNLOAD
+     ======================================================== -->
+
+
+
+<!-- ========================================================
+     EXPLANATION
+     ======================================================== -->
+
+<section class="card">
+
+    <h2>
+        Why Logistic Regression?
+    </h2>
+
+
+    <p>
+
+        Logistic Regression is designed for
+        classification problems. Therefore, instead
+        of attempting to predict the exact continuous
+        Yield value, this implementation predicts
+        whether a record belongs to the Low Yield or
+        High Yield class.
+
+    </p>
+
+
+    <div class="formula">
+
+        P(High Yield) =
+        1 / (1 + e<sup>−z</sup>)
+
+    </div>
+
+
+    <p>
+
+        If the predicted probability is at least
+        0.50, the record is classified as
+        <strong>High Yield</strong>. Otherwise,
+        it is classified as <strong>Low Yield</strong>.
+
+    </p>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+    Crop Yield Prediction System
+    <br>
+    Logistic Regression
+
+</footer>
+
+
+</body>
+
+</html>
