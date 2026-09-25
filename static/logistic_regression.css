@@ -1,556 +1,1280 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f1f5f9;
-    color: #1e293b;
-}
+/* =========================================================
+   CROP YIELD AI
+   LOGISTIC REGRESSION
+   GREEN DASHBOARD THEME
+   ========================================================= */
 
 
-/* ==========================================================
-   NAVBAR
-   ========================================================== */
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
 
-.navbar {
-    background: #111827;
-    color: white;
-    padding: 18px 40px;
+.top-section {
 
     display: flex;
+
     justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 25px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.top-section h1 {
+
+    margin: 0;
+
+    color: #15231c;
+
+    font-size: 29px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.7px;
+
+}
+
+
+.top-section p {
+
+    margin: 7px 0 0;
+
+    color: #819088;
+
+    font-size: 12px;
+
+}
+
+
+.breadcrumb {
+
+    font-size: 10px;
+
+    color: #8b9b94;
+
+    margin-bottom: 8px;
+
+}
+
+
+/* =========================================================
+   TRAIN BUTTON
+   ========================================================= */
+
+.lr-run-button {
+
+    display: inline-flex;
+
     align-items: center;
 
-    gap: 20px;
-}
+    justify-content: center;
 
-.logo {
-    font-size: 21px;
-    font-weight: bold;
-}
+    padding: 11px 18px;
 
-.nav-links {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 9px 13px;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.nav-links a:hover {
-    background: #374151;
-}
-
-.nav-links a.active {
-    background: #4f46e5;
-}
-
-
-/* ==========================================================
-   CONTAINER
-   ========================================================== */
-
-.container {
-    width: 92%;
-    max-width: 1250px;
-    margin: auto;
-    padding: 35px 0 60px;
-}
-
-
-/* ==========================================================
-   HERO
-   ========================================================== */
-
-.hero {
     background:
         linear-gradient(
-            135deg,
-            #312e81,
-            #4f46e5
+            90deg,
+            #159b59,
+            #1db867
         );
 
     color: white;
 
-    padding: 45px;
+    text-decoration: none;
 
-    border-radius: 18px;
+    border-radius: 9px;
 
-    margin-bottom: 28px;
+    font-size: 11px;
 
-    box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.12);
-}
+    font-weight: 600;
 
-.hero h1 {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.hero h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-.hero p {
-    font-size: 17px;
-    line-height: 1.7;
-}
-
-
-/* ==========================================================
-   CARDS
-   ========================================================== */
-
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    margin-bottom: 25px;
+    white-space: nowrap;
 
     box-shadow:
-        0 5px 18px
-        rgba(15, 23, 42, 0.07);
-}
+        0 7px 16px
+        rgba(21,155,89,0.20);
 
-.card h2 {
-    margin-bottom: 15px;
-    color: #111827;
-}
+    transition: 0.2s ease;
 
-.card p {
-    color: #64748b;
-    line-height: 1.7;
 }
 
 
-/* ==========================================================
+.lr-run-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 20px
+        rgba(21,155,89,0.28);
+
+}
+
+
+/* =========================================================
    ERROR
-   ========================================================== */
+   ========================================================= */
 
-.error-box {
-    background: #fee2e2;
-    border-left: 5px solid #dc2626;
-    color: #991b1b;
+.log-error-box {
 
-    padding: 18px;
-    border-radius: 8px;
+    background: #fff1f1;
 
-    margin-bottom: 25px;
-}
+    border: 1px solid #fecaca;
 
+    border-left: 4px solid #dc2626;
 
-/* ==========================================================
-   FORMULA
-   ========================================================== */
-
-.formula {
-    margin: 22px 0;
-
-    padding: 25px;
-
-    background: #eef2ff;
+    padding: 16px 18px;
 
     border-radius: 10px;
 
-    text-align: center;
+    margin-bottom: 20px;
 
-    font-size: 21px;
-
-    font-weight: bold;
-
-    color: #3730a3;
 }
 
 
-/* ==========================================================
-   STATS
-   ========================================================== */
+.log-error-box strong {
 
-.stats {
+    color: #b91c1c;
+
+    font-size: 12px;
+
+}
+
+
+.log-error-box p {
+
+    margin: 5px 0 0;
+
+    color: #991b1b;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+   ========================================================= */
+
+.log-summary-grid {
+
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(4, 1fr);
 
-    gap: 18px;
+    gap: 16px;
 
-    margin-top: 25px;
+    margin-bottom: 22px;
+
 }
 
-.stat-card {
-    background: #f8fafc;
 
-    padding: 22px;
+/* =========================================================
+   SUMMARY CARD
+   ========================================================= */
+
+.log-stat-card {
+
+    background: white;
+
+    border: 1px solid #e4ebe7;
 
     border-radius: 12px;
 
-    text-align: center;
-
-    border: 1px solid #e2e8f0;
-}
-
-.stat-card span {
-    display: block;
-
-    color: #64748b;
-
-    margin-bottom: 10px;
-}
-
-.stat-card strong {
-    display: block;
-
-    font-size: 28px;
-
-    color: #4f46e5;
-}
-
-.stat-card.low strong {
-    color: #dc2626;
-}
-
-.stat-card.high strong {
-    color: #059669;
-}
-
-
-/* ==========================================================
-   FEATURES
-   ========================================================== */
-
-.feature-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, 1fr);
-
-    gap: 15px;
-
-    margin-top: 20px;
-}
-
-.feature-card {
     padding: 18px;
 
-    background: #eef2ff;
+    display: flex;
 
-    color: #3730a3;
+    align-items: center;
 
-    border-radius: 10px;
+    gap: 13px;
 
-    text-align: center;
+    box-shadow:
+        0 4px 14px
+        rgba(26,58,42,0.045);
 
-    font-weight: bold;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
 }
 
 
-/* ==========================================================
-   PIPELINE
-   ========================================================== */
+.log-stat-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(26,58,42,0.08);
+
+}
 
 
+/* =========================================================
+   STAT ICON
+   ========================================================= */
+
+.log-stat-icon {
+
+    width: 44px;
+
+    height: 44px;
+
+    min-width: 44px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 18px;
+
+}
 
 
+.log-stat-icon.green {
+
+    background: #e8f8ef;
+
+}
 
 
+.log-stat-icon.purple {
+
+    background: #f1ebff;
+
+}
 
 
-/* ==========================================================
-   METRICS
-   ========================================================== */
+.log-stat-icon.blue {
 
-.metrics {
+    background: #e9f1ff;
+
+}
+
+
+.log-stat-icon.orange {
+
+    background: #fff1df;
+
+}
+
+
+/* =========================================================
+   STAT TEXT
+   ========================================================= */
+
+.log-stat-card span {
+
+    display: block;
+
+    color: #8b9993;
+
+    font-size: 9px;
+
+    margin-bottom: 3px;
+
+}
+
+
+.log-stat-card strong {
+
+    display: block;
+
+    color: #17241e;
+
+    font-size: 20px;
+
+    line-height: 1.2;
+
+}
+
+
+.log-stat-card small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #9aa7a1;
+
+    font-size: 8px;
+
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.log-card {
+
+    background: white;
+
+    border: 1px solid #e3ebe6;
+
+    border-radius: 14px;
+
+    padding: 24px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(26,58,42,0.05);
+
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.log-card-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.log-card-header h2 {
+
+    margin: 5px 0 5px;
+
+    color: #1c2b23;
+
+    font-size: 18px;
+
+}
+
+
+.log-card-header p {
+
+    margin: 0;
+
+    color: #8c9a94;
+
+    font-size: 10px;
+
+    line-height: 1.6;
+
+}
+
+
+.log-section-label {
+
+    display: inline-block;
+
+    color: #169755;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.1px;
+
+}
+
+
+/* =========================================================
+   READY BADGE
+   ========================================================= */
+
+.log-ready-badge {
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   FORMULA
+   ========================================================= */
+
+.log-formula {
+
+    background:
+        linear-gradient(
+            135deg,
+            #f0faf4,
+            #e9f7ef
+        );
+
+    border: 1px solid #d9eee1;
+
+    border-radius: 11px;
+
+    padding: 18px 22px;
+
+}
+
+
+.formula-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin: 7px 0;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.formula-arrow {
+
+    color: #7b8b84;
+
+    font-size: 18px;
+
+}
+
+
+.formula-low {
+
+    color: #c2410c;
+
+}
+
+
+.formula-high {
+
+    color: #16834d;
+
+}
+
+
+/* =========================================================
+   FEATURES
+   ========================================================= */
+
+.log-feature-grid {
+
     display: grid;
 
     grid-template-columns:
         repeat(5, 1fr);
 
-    gap: 15px;
+    gap: 12px;
 
-    margin-top: 20px;
 }
 
-.metric {
-    background: #f8fafc;
 
-    padding: 22px;
+.log-feature-card {
+
+    min-height: 55px;
+
+    padding: 12px;
+
+    background: #f5fbf7;
+
+    border: 1px solid #dcefe4;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #315b47;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+
+}
+
+
+.log-feature-card:hover {
+
+    border-color: #35aa6b;
+
+    background: #edf9f2;
+
+    transform: translateY(-2px);
+
+}
+
+
+.feature-number {
+
+    width: 23px;
+
+    height: 23px;
+
+    min-width: 23px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #dff3e7;
+
+    color: #16834d;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+.log-metrics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 14px;
+
+}
+
+
+.log-metric {
+
+    background: #f9fbfa;
+
+    border: 1px solid #e4ebe7;
+
+    border-radius: 11px;
+
+    padding: 17px;
 
     text-align: center;
 
-    border-radius: 10px;
+    transition: 0.2s ease;
 
-    border: 1px solid #e2e8f0;
 }
 
-.metric span {
+
+.log-metric:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 16px
+        rgba(26,58,42,0.07);
+
+}
+
+
+.metric-icon {
+
+    width: 32px;
+
+    height: 32px;
+
+    margin: 0 auto 9px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 13px;
+
+}
+
+
+.metric-icon.green {
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+}
+
+
+.metric-icon.purple {
+
+    background: #f1ebff;
+
+    color: #6954f4;
+
+}
+
+
+.metric-icon.blue {
+
+    background: #e9f1ff;
+
+    color: #3b82f6;
+
+}
+
+
+.metric-icon.orange {
+
+    background: #fff1df;
+
+    color: #d97706;
+
+}
+
+
+.log-metric span {
+
     display: block;
 
-    color: #64748b;
+    color: #899992;
 
-    margin-bottom: 10px;
-}
+    font-size: 9px;
 
-.metric strong {
-    font-size: 27px;
+    margin-bottom: 5px;
 
-    color: #4f46e5;
 }
 
 
-/* ==========================================================
+.log-metric strong {
+
+    display: block;
+
+    color: #16834d;
+
+    font-size: 21px;
+
+}
+
+
+/* =========================================================
    TABLE
-   ========================================================== */
+   ========================================================= */
 
-table {
+.log-table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid #e4ebe7;
+
+    border-radius: 10px;
+
+}
+
+
+.log-table {
+
     width: 100%;
 
     border-collapse: collapse;
 
-    margin-top: 20px;
+    background: white;
+
+    font-size: 10px;
+
 }
 
-th {
-    background: #111827;
 
-    color: white;
+.log-table thead {
 
-    padding: 14px;
+    background: #f4f8f5;
+
+}
+
+
+.log-table th {
+
+    padding: 13px 14px;
 
     text-align: left;
+
+    color: #506159;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    border-bottom: 1px solid #e4ebe7;
+
+    white-space: nowrap;
+
 }
 
-td {
-    padding: 14px;
 
-    border-bottom:
-        1px solid #e5e7eb;
+.log-table td {
+
+    padding: 13px 14px;
+
+    color: #596962;
+
+    border-bottom: 1px solid #edf1ef;
+
+    white-space: nowrap;
+
 }
 
-tr:hover {
-    background: #f8fafc;
+
+.log-table tbody tr:last-child td {
+
+    border-bottom: none;
+
 }
 
 
-/* ==========================================================
+.log-table tbody tr:hover {
+
+    background: #f8fbf9;
+
+}
+
+
+.log-table th:first-child {
+
+    color: #27372f;
+
+}
+
+
+/* =========================================================
+   CONFUSION MATRIX
+   ========================================================= */
+
+.cm-good {
+
+    color: #16834d !important;
+
+    font-weight: 700;
+
+}
+
+
+.cm-error {
+
+    color: #dc2626 !important;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   COEFFICIENTS
+   ========================================================= */
+
+.feature-name {
+
+    color: #27372f !important;
+
+    font-weight: 600;
+
+}
+
+
+.coefficient-positive {
+
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+    font-weight: 700;
+
+}
+
+
+.coefficient-negative {
+
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    background: #fff1f1;
+
+    color: #dc2626;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
    PREDICTION FORM
-   ========================================================== */
+   ========================================================= */
 
-.prediction-form {
+.log-prediction-form {
+
     display: grid;
 
     grid-template-columns:
         repeat(2, 1fr);
 
-    gap: 20px;
+    gap: 17px;
 
-    margin-top: 25px;
 }
 
-.form-group {
+
+.log-form-group {
+
     display: flex;
 
     flex-direction: column;
+
 }
 
-.form-group label {
-    font-weight: bold;
 
-    margin-bottom: 8px;
+.log-form-group label {
 
-    color: #374151;
+    margin-bottom: 7px;
+
+    color: #34443c;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
 }
 
-.form-group input {
-    padding: 13px;
 
-    border:
-        1px solid #cbd5e1;
+.log-form-group input {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dce5df;
 
     border-radius: 8px;
 
-    font-size: 16px;
+    background: #fbfcfb;
+
+    color: #26352d;
+
+    font-size: 11px;
 
     outline: none;
+
+    transition: 0.2s ease;
+
 }
 
-.form-group input:focus {
-    border-color: #4f46e5;
+
+.log-form-group input::placeholder {
+
+    color: #a4afa9;
+
+}
+
+
+.log-form-group input:focus {
+
+    border-color: #27a863;
+
+    background: white;
 
     box-shadow:
         0 0 0 3px
-        rgba(79, 70, 229, 0.1);
+        rgba(39,168,99,0.10);
+
 }
 
-.predict-button {
+
+/* =========================================================
+   PREDICTION BUTTON
+   ========================================================= */
+
+.log-predict-button {
+
     grid-column: 1 / -1;
-
-    padding: 15px;
-
-    background: #4f46e5;
-
-    color: white;
 
     border: none;
 
-    border-radius: 8px;
+    padding: 13px;
 
-    font-size: 17px;
+    border-radius: 9px;
 
-    font-weight: bold;
+    background:
+        linear-gradient(
+            90deg,
+            #159b59,
+            #1db867
+        );
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 700;
 
     cursor: pointer;
+
+    box-shadow:
+        0 6px 14px
+        rgba(21,155,89,0.18);
+
+    transition: 0.2s ease;
+
 }
 
-.predict-button:hover {
-    background: #3730a3;
+
+.log-predict-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 18px
+        rgba(21,155,89,0.25);
+
 }
 
 
-/* ==========================================================
+/* =========================================================
+   PREDICTION BADGE
+   ========================================================= */
+
+.prediction-badge {
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    background: #f1ebff;
+
+    color: #6954f4;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
    PREDICTION RESULT
-   ========================================================== */
+   ========================================================= */
 
-.prediction-result {
-    text-align: center;
+.log-prediction-result {
 
-    padding: 35px;
-
-    border-radius: 15px;
-}
-
-.high-result {
-    background: #ecfdf5;
-
-    border:
-        2px solid #10b981;
-}
-
-.low-result {
-    background: #fef2f2;
-
-    border:
-        2px solid #ef4444;
-}
-
-.prediction-result h2 {
-    margin-bottom: 15px;
-}
-
-.prediction-label {
-    font-size: 38px;
-
-    font-weight: bold;
-
-    margin: 15px 0;
-}
-
-.high-result .prediction-label {
-    color: #047857;
-}
-
-.low-result .prediction-label {
-    color: #b91c1c;
-}
-
-.probability {
-    font-size: 20px;
-
-    font-weight: bold;
-
-    margin-top: 10px;
-
-    color: #4f46e5;
-}
-
-.threshold {
-    margin-top: 18px;
-
-    color: #64748b;
-}
-
-
-/* ==========================================================
-   DOWNLOAD
-   ========================================================== */
-
-
-
-
-
-
-/* ==========================================================
-   FOOTER
-   ========================================================== */
-
-footer {
     text-align: center;
 
     padding: 30px;
 
-    color: #64748b;
+    border-radius: 12px;
 
-    background: white;
 }
 
 
-/* ==========================================================
+.high-result {
+
+    background: #eefaf3;
+
+    border: 1px solid #b9e7ca;
+
+}
+
+
+.low-result {
+
+    background: #fff4f4;
+
+    border: 1px solid #f4c4c4;
+
+}
+
+
+.result-icon {
+
+    font-size: 34px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.result-status {
+
+    display: block;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: #8a9992;
+
+}
+
+
+.prediction-label {
+
+    margin: 8px 0 13px;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+}
+
+
+.high-result .prediction-label {
+
+    color: #16834d;
+
+}
+
+
+.low-result .prediction-label {
+
+    color: #c62828;
+
+}
+
+
+.probability {
+
+    margin-top: 7px;
+
+    color: #16834d;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.low-result .probability {
+
+    color: #c62828;
+
+}
+
+
+.low-probability {
+
+    opacity: 0.85;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.log-description {
+
+    color: #788880;
+
+    font-size: 11px;
+
+    line-height: 1.8;
+
+    margin: 0 0 18px;
+
+}
+
+
+.log-description strong {
+
+    color: #29372f;
+
+}
+
+
+/* =========================================================
+   PROBABILITY FORMULA
+   ========================================================= */
+
+.probability-formula {
+
+    text-align: center;
+
+    color: #16834d;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
    RESPONSIVE
-   ========================================================== */
+   ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
-    .metrics {
+    .log-summary-grid {
+
         grid-template-columns:
             repeat(2, 1fr);
+
     }
 
-    .feature-grid {
+
+    .log-feature-grid {
+
         grid-template-columns:
-            repeat(2, 1fr);
+            repeat(3, 1fr);
+
     }
 
-    .stats {
+
+    .log-metrics-grid {
+
         grid-template-columns:
-            1fr;
+            repeat(3, 1fr);
+
     }
 
 }
 
-@media (max-width: 700px) {
 
-    .navbar {
+@media (max-width: 800px) {
+
+    .top-section {
+
         flex-direction: column;
+
     }
 
-    .hero h1 {
-        font-size: 30px;
+
+    .log-summary-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
     }
 
-    .prediction-form {
+
+    .log-feature-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .log-metrics-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .log-prediction-form {
+
         grid-template-columns: 1fr;
+
     }
 
-    .predict-button {
+
+    .log-predict-button {
+
         grid-column: auto;
+
     }
 
-    .metrics {
+}
+
+
+@media (max-width: 600px) {
+
+    .log-summary-grid {
+
         grid-template-columns: 1fr;
+
     }
 
-    .feature-grid {
+
+    .log-feature-grid {
+
         grid-template-columns: 1fr;
+
+    }
+
+
+    .log-metrics-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .log-card {
+
+        padding: 18px;
+
+    }
+
+
+    .log-card-header {
+
+        flex-direction: column;
+
+    }
+
+
+    .formula-row {
+
+        flex-direction: column;
+
+        gap: 5px;
+
     }
 
 }

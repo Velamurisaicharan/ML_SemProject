@@ -1,51 +1,105 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="en">
+{% block title %}
+Crop Yield - Linear Regression
+{% endblock %}
 
-<head>
+{% block extra_css %}
 
-    <meta charset="UTF-8">
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='crop_linear_regression.css') }}">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+{% endblock %}
 
-    <title>
-        Crop Yield - Linear Regression
-    </title>
+{% block content %}
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for(
-            'static',
-            filename='crop_linear_regression.css'
-        ) }}">
+<!-- =========================
+     PAGE HEADER
+========================= -->
 
-</head>
+<div class="top-section">
 
-<body>
+    <div>
+
+        <div class="breadcrumb">
+            Dashboard / Modeling / Linear Regression
+        </div>
+
+        <h1>
+            Crop Yield Linear Regression
+        </h1>
+
+        <p>
+            Predict crop yield from agricultural
+            and environmental features.
+        </p>
+
+    </div>
+
+
+    <button
+    class="btn"
+    onclick="runModel()">
+
+    ▶ Train Linear Regression
+
+</button>
+
+</div>
+
+
+
+<!-- =========================
+     ERROR
+========================= -->
+
+{% if error %}
+
+<div class="error-box">
+
+    <strong>
+        Linear Regression Error
+    </strong>
+
+    <p>
+        {{ error }}
+    </p>
+
+</div>
+
+{% endif %}
+
+
+
+{% if results %}
+
 
 
 <!-- =====================================================
-     SIDEBAR
+     SUMMARY
 ===================================================== -->
 
-<aside class="sidebar">
+<section class="lr-summary-grid">
 
 
-    <div class="logo">
+    <div class="lr-stat-card">
 
-        <div class="logo-icon">
-            ML
+        <div class="lr-stat-icon green">
+            🌾
         </div>
 
         <div>
 
+            <span>
+                Target
+            </span>
+
             <strong>
-                DataLab
+                Yield
             </strong>
 
             <small>
-                Crop Yield Analytics
+                Prediction target
             </small>
 
         </div>
@@ -53,89 +107,25 @@
     </div>
 
 
-    <nav>
 
+    <div class="lr-stat-card">
 
-        <a href="{{ url_for('index') }}">
-
-            ⌂
-
-            Dashboard
-
-        </a>
-
-
-        <a href="{{ url_for('data_loading') }}">
-
-            ▣
-
-            Data Loading
-
-        </a>
-
-
-        <a href="{{ url_for('eda_page') }}">
-
+        <div class="lr-stat-icon purple">
             ▦
-
-            EDA
-
-        </a>
-
-
-        <a href="{{ url_for('preprocessing_page') }}">
-
-            ⚙
-
-            Preprocessing
-
-        </a>
-
-
-        <a
-            href="{{ url_for('linear_regression_page') }}"
-            class="active">
-
-            📈
-
-            Linear Regression
-
-        </a>
-
-
-        <a class="disabled">
-
-            🌳
-
-            Trees
-
-        </a>
-
-
-        <a class="disabled">
-
-            ◈
-
-            Results
-
-        </a>
-
-
-    </nav>
-
-
-    <div class="status">
-
-        <span></span>
+        </div>
 
         <div>
 
+            <span>
+                Original Rows
+            </span>
+
             <strong>
-                Model Ready
+                {{ "{:,}".format(results.original_rows) }}
             </strong>
 
             <small>
-                Crop dataset connected
+                Dataset records
             </small>
 
         </div>
@@ -143,666 +133,524 @@
     </div>
 
 
-</aside>
 
+    <div class="lr-stat-card">
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main class="main">
-
-
-    <!-- HEADER -->
-
-    <header class="header">
-
+        <div class="lr-stat-icon blue">
+            ✓
+        </div>
 
         <div>
 
-            <div class="breadcrumb">
+            <span>
+                Training Rows
+            </span>
 
-                Dashboard / Modeling /
-                Linear Regression
+            <strong>
+                {{ "{:,}".format(results.train_rows) }}
+            </strong>
 
-            </div>
+            <small>
+                Training dataset
+            </small>
+
+        </div>
+
+    </div>
 
 
-            <h1>
-                Crop Yield Linear Regression
-            </h1>
 
+    <div class="lr-stat-card">
+
+        <div class="lr-stat-icon orange">
+            ◎
+        </div>
+
+        <div>
+
+            <span>
+                Test Rows
+            </span>
+
+            <strong>
+                {{ "{:,}".format(results.test_rows) }}
+            </strong>
+
+            <small>
+                Testing dataset
+            </small>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     MODULES
+===================================================== -->
+
+<section class="lr-card">
+
+    <div class="lr-card-header">
+
+        <div>
+
+            <span class="section-label">
+                LINEAR REGRESSION PIPELINE
+            </span>
+
+            <h2>
+                Linear Regression Modules
+            </h2>
 
             <p>
-                Predict crop yield from agricultural
-                and environmental features.
+                Explore model performance, predictions,
+                residuals and feature coefficients.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="lr-module-buttons">
+
+        <button
+            class="lr-module active"
+            onclick="showSection('overview', this)">
+
+            📊 Overview
+
+        </button>
+
+
+        <button
+            class="lr-module"
+            onclick="showSection('metrics', this)">
+
+            🎯 Metrics
+
+        </button>
+
+
+        <button
+            class="lr-module"
+            onclick="showSection('predictions', this)">
+
+            📋 Predictions
+
+        </button>
+
+
+        <button
+            class="lr-module"
+            onclick="showSection('residuals', this)">
+
+            📉 Residuals
+
+        </button>
+
+
+        <button
+            class="lr-module"
+            onclick="showSection('coefficients', this)">
+
+            ⭐ Coefficients
+
+        </button>
+
+
+        <button
+            class="lr-module"
+            onclick="showSection('features', this)">
+
+            🧩 Features
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     OVERVIEW
+===================================================== -->
+
+<section
+    id="overview"
+    class="lr-section active">
+
+
+    <div class="lr-section-title">
+
+        <div>
+
+            <span>
+                MODEL
+            </span>
+
+            <h2>
+                Crop Yield Prediction
+            </h2>
+
+            <p>
+                Linear Regression predicts the continuous
+                Yield value from crop, location, weather
+                and agricultural features.
             </p>
 
         </div>
 
 
-        <button
-            class="run-button"
-            onclick="runModel()">
+        <div class="lr-status-badge">
+            ✓ Trained
+        </div>
 
-            ▶ Train Linear Regression
-
-        </button>
-
-
-    </header>
+    </div>
 
 
 
-    <!-- =================================================
-         ERROR
-    ================================================= -->
+    <div class="lr-info-grid">
 
-    {% if error %}
 
-    <div class="error">
+        <div class="lr-info-card">
 
-        <strong>
-            Linear Regression Error
-        </strong>
+            <span>
+                Algorithm
+            </span>
+
+            <strong>
+                Linear Regression
+            </strong>
+
+            <p>
+                Supervised regression algorithm.
+            </p>
+
+        </div>
+
+
+        <div class="lr-info-card">
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                Yield
+            </strong>
+
+            <p>
+                Continuous crop yield value.
+            </p>
+
+        </div>
+
+
+        <div class="lr-info-card">
+
+            <span>
+                Numerical Features
+            </span>
+
+            <strong>
+                {{ results.numerical_features|length }}
+            </strong>
+
+            <p>
+                Standardized before training.
+            </p>
+
+        </div>
+
+
+        <div class="lr-info-card">
+
+            <span>
+                Encoded Features
+            </span>
+
+            <strong>
+                {{ results.transformed_features }}
+            </strong>
+
+            <p>
+                After categorical encoding.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- EQUATION -->
+
+    <div class="lr-equation-card">
+
+        <span>
+            MODEL FORM
+        </span>
+
+        <div class="lr-equation">
+            Ŷ = β₀ + β₁X₁ + β₂X₂ + ... + βₙXₙ
+        </div>
 
         <p>
-            {{ error }}
+
+            Intercept:
+
+            <strong>
+                {{ results.intercept }}
+            </strong>
+
         </p>
+
+    </div>
+
+
+
+    {% if results.actual_predicted_plot %}
+
+    <div class="lr-panel lr-chart">
+
+        <div class="lr-panel-header">
+
+            <div>
+
+                <h3>
+                    Actual vs Predicted Yield
+                </h3>
+
+                <p>
+                    Comparison between observed and predicted values.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <img
+            src="data:image/png;base64,{{ results.actual_predicted_plot }}"
+            alt="Actual vs Predicted Yield">
 
     </div>
 
     {% endif %}
 
 
+</section>
 
-    {% if results %}
 
 
-    <!-- =================================================
-         SUMMARY CARDS
-    ================================================= -->
+<!-- =====================================================
+     METRICS
+===================================================== -->
 
-    <section class="summary">
+<section
+    id="metrics"
+    class="lr-section">
 
 
-        <div class="card">
+    <div class="lr-section-title">
 
-            <div class="icon blue">
-                🌾
-            </div>
-
-            <div>
-
-                <small>
-                    Target
-                </small>
-
-                <strong>
-                    Yield
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon purple">
-                ▦
-            </div>
-
-            <div>
-
-                <small>
-                    Original Rows
-                </small>
-
-                <strong>
-                    {{ "{:,}".format(
-                        results.original_rows
-                    ) }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon green">
-                ✓
-            </div>
-
-            <div>
-
-                <small>
-                    Training Rows
-                </small>
-
-                <strong>
-                    {{ "{:,}".format(
-                        results.train_rows
-                    ) }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon orange">
-                ◎
-            </div>
-
-            <div>
-
-                <small>
-                    Test Rows
-                </small>
-
-                <strong>
-                    {{ "{:,}".format(
-                        results.test_rows
-                    ) }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =================================================
-         MODEL MODULES
-    ================================================= -->
-
-    <section class="modules">
-
-
-        <h2>
-            Linear Regression Modules
-        </h2>
-
-
-        <p>
-            Explore model performance, predictions,
-            residuals and feature coefficients.
-        </p>
-
-
-        <div class="module-buttons">
-
-
-            <button
-                class="module active"
-                onclick="showSection(
-                    'overview',
-                    this
-                )">
-
-                📊 Overview
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'metrics',
-                    this
-                )">
-
-                🎯 Metrics
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'predictions',
-                    this
-                )">
-
-                📋 Predictions
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'residuals',
-                    this
-                )">
-
-                📉 Residuals
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'coefficients',
-                    this
-                )">
-
-                ⭐ Coefficients
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'features',
-                    this
-                )">
-
-                🧩 Features
-
-            </button>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         OVERVIEW
-    ================================================= -->
-
-    <section
-        id="overview"
-        class="section active-section">
-
-
-        <div class="section-title">
-
-
-            <div>
-
-                <span>
-                    MODEL
-                </span>
-
-
-                <h2>
-                    Crop Yield Prediction
-                </h2>
-
-
-                <p>
-                    Linear Regression predicts the continuous
-                    Yield value from crop, location,
-                    weather and agricultural features.
-                </p>
-
-            </div>
-
-
-            <div class="badge">
-                ✓ Trained
-            </div>
-
-
-        </div>
-
-
-        <div class="info-grid">
-
-
-            <div class="info-card">
-
-                <span>
-                    Algorithm
-                </span>
-
-                <strong>
-                    Linear Regression
-                </strong>
-
-                <p>
-                    Supervised regression algorithm.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <span>
-                    Target
-                </span>
-
-                <strong>
-                    Yield
-                </strong>
-
-                <p>
-                    Continuous crop yield value.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <span>
-                    Numerical Features
-                </span>
-
-                <strong>
-                    {{ results.numerical_features|length }}
-                </strong>
-
-                <p>
-                    Standardized before training.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <span>
-                    Encoded Features
-                </span>
-
-                <strong>
-                    {{ results.transformed_features }}
-                </strong>
-
-                <p>
-                    After categorical encoding.
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-        <div class="equation-card">
+        <div>
 
             <span>
-                MODEL FORM
+                MODEL EVALUATION
             </span>
 
-            <div class="equation">
-
-                Ŷ = β₀ + β₁X₁ + β₂X₂ + ... + βₙXₙ
-
-            </div>
+            <h2>
+                Regression Performance
+            </h2>
 
             <p>
+                Metrics calculated using the held-out test dataset.
+            </p>
 
-                Intercept:
+        </div>
 
-                <strong>
-                    {{ results.intercept }}
-                </strong>
+    </div>
 
+
+
+    <div class="lr-metrics-grid">
+
+
+        <div class="lr-metric-card">
+
+            <small>
+                Test R²
+            </small>
+
+            <strong>
+                {{ "%.4f"|format(results.test_r2) }}
+            </strong>
+
+            <p>
+                Explained variance
             </p>
 
         </div>
 
 
-        {% if results.actual_predicted_plot %}
+        <div class="lr-metric-card">
 
-        <div class="panel chart">
+            <small>
+                MAE
+            </small>
+
+            <strong>
+                {{ "%.4f"|format(results.mae) }}
+            </strong>
+
+            <p>
+                Mean absolute error
+            </p>
+
+        </div>
+
+
+        <div class="lr-metric-card">
+
+            <small>
+                MSE
+            </small>
+
+            <strong>
+                {{ "%.4f"|format(results.mse) }}
+            </strong>
+
+            <p>
+                Mean squared error
+            </p>
+
+        </div>
+
+
+        <div class="lr-metric-card">
+
+            <small>
+                RMSE
+            </small>
+
+            <strong>
+                {{ "%.4f"|format(results.rmse) }}
+            </strong>
+
+            <p>
+                Root mean squared error
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="lr-comparison-grid">
+
+
+        <div class="lr-panel">
 
             <h3>
-                Actual vs Predicted Yield
+                Training R²
             </h3>
 
-            <img
-                src="data:image/png;base64,
-                {{ results.actual_predicted_plot }}">
-
-        </div>
-
-        {% endif %}
-
-
-    </section>
-
-
-
-    <!-- =================================================
-         METRICS
-    ================================================= -->
-
-    <section
-        id="metrics"
-        class="section">
-
-
-        <div class="section-title">
-
-            <div>
-
-                <span>
-                    MODEL EVALUATION
-                </span>
-
-                <h2>
-                    Regression Performance
-                </h2>
-
-                <p>
-                    Metrics calculated using the
-                    held-out test dataset.
-                </p>
-
+            <div class="lr-big-number">
+                {{ "%.4f"|format(results.train_r2) }}
             </div>
 
         </div>
 
 
-        <div class="metrics-grid">
+        <div class="lr-panel">
 
+            <h3>
+                Testing R²
+            </h3>
 
-            <div class="metric-card">
-
-                <small>
-                    Test R²
-                </small>
-
-                <strong>
-                    {{ "%.4f"|format(
-                        results.test_r2
-                    ) }}
-                </strong>
-
-                <p>
-                    Explained variance
-                </p>
-
+            <div class="lr-big-number">
+                {{ "%.4f"|format(results.test_r2) }}
             </div>
-
-
-            <div class="metric-card">
-
-                <small>
-                    MAE
-                </small>
-
-                <strong>
-                    {{ "%.4f"|format(
-                        results.mae
-                    ) }}
-                </strong>
-
-                <p>
-                    Mean absolute error
-                </p>
-
-            </div>
-
-
-            <div class="metric-card">
-
-                <small>
-                    MSE
-                </small>
-
-                <strong>
-                    {{ "%.4f"|format(
-                        results.mse
-                    ) }}
-                </strong>
-
-                <p>
-                    Mean squared error
-                </p>
-
-            </div>
-
-
-            <div class="metric-card">
-
-                <small>
-                    RMSE
-                </small>
-
-                <strong>
-                    {{ "%.4f"|format(
-                        results.rmse
-                    ) }}
-                </strong>
-
-                <p>
-                    Root mean squared error
-                </p>
-
-            </div>
-
 
         </div>
 
 
-        <div class="comparison-grid">
+        <div class="lr-panel">
 
+            <h3>
+                Adjusted R²
+            </h3>
 
-            <div class="panel">
-
-                <h3>
-                    Training R²
-                </h3>
-
-                <div class="big-number">
-
-                    {{ "%.4f"|format(
-                        results.train_r2
-                    ) }}
-
-                </div>
-
+            <div class="lr-big-number">
+                {{ "%.4f"|format(results.adjusted_r2) }}
             </div>
-
-
-            <div class="panel">
-
-                <h3>
-                    Testing R²
-                </h3>
-
-                <div class="big-number">
-
-                    {{ "%.4f"|format(
-                        results.test_r2
-                    ) }}
-
-                </div>
-
-            </div>
-
-
-            <div class="panel">
-
-                <h3>
-                    Adjusted R²
-                </h3>
-
-                <div class="big-number">
-
-                    {{ "%.4f"|format(
-                        results.adjusted_r2
-                    ) }}
-
-                </div>
-
-            </div>
-
 
         </div>
 
 
-    </section>
+    </div>
+
+
+</section>
 
 
 
-    <!-- =================================================
-         PREDICTIONS
-    ================================================= -->
+<!-- =====================================================
+     PREDICTIONS
+===================================================== -->
 
-    <section
-        id="predictions"
-        class="section">
-
-
-        <div class="section-title">
+<section
+    id="predictions"
+    class="lr-section">
 
 
-            <div>
+    <div class="lr-section-title">
 
-                <span>
-                    PREDICTION OUTPUT
-                </span>
+        <div>
 
+            <span>
+                PREDICTION OUTPUT
+            </span>
 
-                <h2>
-                    Actual vs Predicted Yield
-                </h2>
+            <h2>
+                Actual vs Predicted Yield
+            </h2>
 
-
-                <p>
-                    Sample predictions from the test dataset.
-                </p>
-
-            </div>
-
-
-            <a
-                href="{{ url_for(
-                    'download_crop_linear_regression'
-                ) }}"
-                class="download">
-
-                ↓ Download CSV
-
-            </a>
-
+            <p>
+                Sample predictions from the test dataset.
+            </p>
 
         </div>
 
 
-        <div class="panel">
+        <a
+            href="{{ url_for('download_crop_linear_regression') }}"
+            class="lr-download">
+
+            ↓ Download CSV
+
+        </a>
+
+    </div>
 
 
-            <table>
+
+    <div class="lr-panel">
+
+        <div class="table-wrapper">
+
+            <table class="lr-table">
 
                 <thead>
 
@@ -831,8 +679,7 @@
 
                 <tbody>
 
-                {% for item in
-                   results.sample_predictions %}
+                    {% for item in results.sample_predictions %}
 
                     <tr>
 
@@ -854,112 +701,155 @@
 
                     </tr>
 
-                {% endfor %}
+                    {% endfor %}
 
                 </tbody>
 
             </table>
 
-
         </div>
 
-
-    </section>
-
+    </div>
 
 
-    <!-- =================================================
-         RESIDUALS
-    ================================================= -->
-
-    <section
-        id="residuals"
-        class="section">
+</section>
 
 
-        <div class="section-title">
 
-            <div>
+<!-- =====================================================
+     RESIDUALS
+===================================================== -->
 
-                <span>
-                    ERROR ANALYSIS
-                </span>
-
-                <h2>
-                    Residual Analysis
-                </h2>
-
-                <p>
-                    Residuals represent the difference between
-                    actual and predicted yield.
-                </p>
-
-            </div>
-
-        </div>
+<section
+    id="residuals"
+    class="lr-section">
 
 
-        {% if results.residual_plot %}
+    <div class="lr-section-title">
 
-        <div class="panel chart">
-
-            <img
-                src="data:image/png;base64,
-                {{ results.residual_plot }}">
-
-        </div>
-
-        {% endif %}
-
-
-        <div class="equation-card">
+        <div>
 
             <span>
-                RESIDUAL
+                ERROR ANALYSIS
             </span>
 
-            <div class="equation">
-
-                Residual = Actual Yield − Predicted Yield
-
-            </div>
+            <h2>
+                Residual Analysis
+            </h2>
 
             <p>
-                Smaller residuals indicate predictions
-                closer to the observed yield.
+                Residuals represent the difference between
+                actual and predicted yield.
             </p>
 
         </div>
 
-
-    </section>
-
+    </div>
 
 
-    <!-- =================================================
-         COEFFICIENTS
-    ================================================= -->
 
-    <section
-        id="coefficients"
-        class="section">
+    {% if results.residual_plot %}
+
+    <div class="lr-panel lr-chart">
+
+        <h3>
+            Residual Plot
+        </h3>
+
+        <img
+            src="data:image/png;base64,{{ results.residual_plot }}"
+            alt="Residual analysis">
+
+    </div>
+
+    {% endif %}
 
 
-        <div class="section-title">
+
+    <div class="lr-equation-card">
+
+        <span>
+            RESIDUAL
+        </span>
+
+        <div class="lr-equation">
+            Residual = Actual Yield − Predicted Yield
+        </div>
+
+        <p>
+            Smaller residuals indicate predictions
+            closer to the observed yield.
+        </p>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     COEFFICIENTS
+===================================================== -->
+
+<section
+    id="coefficients"
+    class="lr-section">
+
+
+    <div class="lr-section-title">
+
+        <div>
+
+            <span>
+                FEATURE EFFECTS
+            </span>
+
+            <h2>
+                Linear Regression Coefficients
+            </h2>
+
+            <p>
+                Coefficients describe the fitted linear
+                relationship after preprocessing.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    {% if results.coefficient_plot %}
+
+    <div class="lr-panel lr-chart">
+
+        <h3>
+            Coefficient Visualization
+        </h3>
+
+        <img
+            src="data:image/png;base64,{{ results.coefficient_plot }}"
+            alt="Linear regression coefficients">
+
+    </div>
+
+    {% endif %}
+
+
+
+    <div class="lr-panel">
+
+        <div class="lr-panel-header">
 
             <div>
 
-                <span>
-                    FEATURE EFFECTS
-                </span>
-
-                <h2>
-                    Linear Regression Coefficients
-                </h2>
+                <h3>
+                    Feature Coefficients
+                </h3>
 
                 <p>
-                    Coefficients describe the fitted linear
-                    relationship after preprocessing.
+                    Top 20 coefficient values.
                 </p>
 
             </div>
@@ -967,22 +857,9 @@
         </div>
 
 
-        {% if results.coefficient_plot %}
+        <div class="table-wrapper">
 
-        <div class="panel chart">
-
-            <img
-                src="data:image/png;base64,
-                {{ results.coefficient_plot }}">
-
-        </div>
-
-        {% endif %}
-
-
-        <div class="panel">
-
-            <table>
+            <table class="lr-table">
 
                 <thead>
 
@@ -1007,8 +884,7 @@
 
                 <tbody>
 
-                {% for item in
-                   results.coefficient_data[:20] %}
+                    {% for item in results.coefficient_data[:20] %}
 
                     <tr>
 
@@ -1017,7 +893,9 @@
                         </td>
 
                         <td>
-                            {{ item.feature }}
+                            <strong>
+                                {{ item.feature }}
+                            </strong>
                         </td>
 
                         <td>
@@ -1026,7 +904,7 @@
 
                     </tr>
 
-                {% endfor %}
+                    {% endfor %}
 
                 </tbody>
 
@@ -1034,106 +912,99 @@
 
         </div>
 
-
-    </section>
-
+    </div>
 
 
-    <!-- =================================================
-         FEATURES
-    ================================================= -->
-
-    <section
-        id="features"
-        class="section">
+</section>
 
 
-        <div class="section-title">
 
-            <div>
+<!-- =====================================================
+     FEATURES
+===================================================== -->
 
-                <span>
-                    DATA FEATURES
+<section
+    id="features"
+    class="lr-section">
+
+
+    <div class="lr-section-title">
+
+        <div>
+
+            <span>
+                DATA FEATURES
+            </span>
+
+            <h2>
+                Model Input Features
+            </h2>
+
+            <p>
+                Features supplied to the Linear Regression pipeline.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="lr-feature-card">
+
+
+        <div class="lr-feature-group">
+
+            <h3>
+                Numerical Features
+            </h3>
+
+
+            <div class="lr-chips">
+
+                {% for feature in results.numerical_features %}
+
+                <span class="lr-chip numerical">
+                    {{ feature }}
                 </span>
 
-                <h2>
-                    Model Input Features
-                </h2>
-
-                <p>
-                    Features supplied to the Linear Regression
-                    pipeline.
-                </p>
+                {% endfor %}
 
             </div>
 
         </div>
 
 
-        <div class="feature-section">
+
+        <div class="lr-feature-group">
+
+            <h3>
+                Categorical Features
+            </h3>
 
 
-            <div class="feature-group">
+            <div class="lr-chips">
 
-                <h3>
-                    Numerical Features
-                </h3>
+                {% for feature in results.categorical_features %}
 
-
-                <div class="chips">
-
-                {% for feature in
-                   results.numerical_features %}
-
-                    <span class="chip numerical">
-
-                        {{ feature }}
-
-                    </span>
+                <span class="lr-chip categorical">
+                    {{ feature }}
+                </span>
 
                 {% endfor %}
 
-                </div>
-
             </div>
-
-
-            <div class="feature-group">
-
-                <h3>
-                    Categorical Features
-                </h3>
-
-
-                <div class="chips">
-
-                {% for feature in
-                   results.categorical_features %}
-
-                    <span class="chip categorical">
-
-                        {{ feature }}
-
-                    </span>
-
-                {% endfor %}
-
-                </div>
-
-            </div>
-
 
         </div>
 
 
-    </section>
+    </div>
 
 
+</section>
 
-    {% endif %}
 
-
-</main>
+{% endif %}
 
 
 
@@ -1143,12 +1014,11 @@
 
 <div
     id="loading"
-    class="loading">
+    class="lr-loading">
 
+    <div class="lr-loading-box">
 
-    <div class="loading-box">
-
-        <div class="spinner"></div>
+        <div class="lr-spinner"></div>
 
         <h3>
             Training Linear Regression
@@ -1161,54 +1031,38 @@
 
     </div>
 
-
 </div>
 
 
 
 <script>
 
-function showSection(
-    id,
-    button
-) {
+function showSection(id, button) {
 
     document
-        .querySelectorAll(".section")
-        .forEach(
-            function(section) {
+        .querySelectorAll(".lr-section")
+        .forEach(function(section) {
 
-                section.classList.remove(
-                    "active-section"
-                );
+            section.classList.remove("active");
 
-            }
-        );
+        });
 
 
     document
-        .querySelectorAll(".module")
-        .forEach(
-            function(btn) {
+        .querySelectorAll(".lr-module")
+        .forEach(function(btn) {
 
-                btn.classList.remove(
-                    "active"
-                );
+            btn.classList.remove("active");
 
-            }
-        );
+        });
 
 
     document
         .getElementById(id)
-        .classList.add(
-            "active-section"
-        );
+        .classList.add("active");
 
 
-    button.classList.add(
-        "active"
-    );
+    button.classList.add("active");
 
 }
 
@@ -1220,26 +1074,15 @@ function runModel() {
         .classList.add("show");
 
 
-    setTimeout(
+    setTimeout(function() {
 
-        function() {
+        window.location.href =
+            "{{ url_for('linear_regression_page') }}";
 
-            window.location.href =
-                "{{ url_for(
-                    'linear_regression_page'
-                ) }}";
-
-        },
-
-        300
-
-    );
+    }, 300);
 
 }
 
 </script>
 
-
-</body>
-
-</html>
+{% endblock %}
