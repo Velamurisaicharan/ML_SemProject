@@ -1,119 +1,106 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Crop Yield - Decision Trees
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for(
-            'static',
-            filename='trees.css'
-        ) }}">
-
-</head>
+{% block title %}
+Crop Yield - Decision Trees
+{% endblock %}
 
 
-<body>
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='trees.css') }}">
+
+{% endblock %}
 
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
-<aside class="sidebar">
+{% block content %}
 
 
-    <div class="logo">
+<!-- =========================================================
+     PAGE HEADER
+========================================================= -->
 
-        <div class="logo-icon">
-            ML
+<div class="top-section">
+
+    <div>
+
+        <div class="breadcrumb">
+            Dashboard / Modeling / Trees
         </div>
 
-        <div>
+        <h1>
+            Decision Tree Regression
+        </h1>
 
-            <strong>
-                DataLab
-            </strong>
-
-            <small>
-                Crop Yield Analytics
-            </small>
-
-        </div>
+        <p>
+            Predict Crop Yield using tree-based learning.
+        </p>
 
     </div>
 
 
-    <nav>
+    <button
+        class="tree-run-button"
+        onclick="runTree()">
 
-        <a href="{{ url_for('index') }}">
-            ⌂
-            <span>Dashboard</span>
-        </a>
+        🌳 Run Decision Tree
 
+    </button>
 
-        <a href="{{ url_for('data_loading') }}">
-            ▣
-            <span>Data Loading</span>
-        </a>
+</div>
 
 
-        <a href="{{ url_for('eda_page') }}">
-            ▦
-            <span>EDA</span>
-        </a>
+<!-- =========================================================
+     ERROR
+========================================================= -->
+
+{% if error %}
+
+<div class="tree-error-box">
+
+    <strong>
+        Decision Tree Error
+    </strong>
+
+    <p>
+        {{ error }}
+    </p>
+
+</div>
+
+{% endif %}
 
 
-        <a href="{{ url_for('preprocessing_page') }}">
-            ⚙
-            <span>Preprocessing</span>
-        </a>
+{% if results %}
 
 
-        <a href="{{ url_for('linear_regression_page') }}">
-            📈
-            <span>Linear Regression</span>
-        </a>
+<!-- =========================================================
+     SUMMARY CARDS
+========================================================= -->
+
+<section class="tree-summary-grid">
 
 
-        <a
-            href="{{ url_for('trees_page') }}"
-            class="active">
+    <!-- TARGET -->
 
-            🌳
+    <div class="tree-stat-card">
+
+        <div class="tree-stat-icon green">
+            🌾
+        </div>
+
+        <div>
 
             <span>
-                Trees
+                Target
             </span>
 
-        </a>
-
-
-    </nav>
-
-
-    <div class="status">
-
-        <span></span>
-
-        <div>
-
             <strong>
-                Model Ready
+                Yield
             </strong>
 
             <small>
-                Crop dataset connected
+                Prediction target
             </small>
 
         </div>
@@ -121,838 +108,800 @@
     </div>
 
 
-</aside>
+    <!-- ROWS -->
 
+    <div class="tree-stat-card">
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main class="main">
-
-
-    <!-- HEADER -->
-
-    <header class="header">
-
+        <div class="tree-stat-icon purple">
+            ▦
+        </div>
 
         <div>
 
-            <div class="breadcrumb">
+            <span>
+                Dataset Rows
+            </span>
 
-                Dashboard /
-                Modeling /
-                Trees
+            <strong>
+                {{ "{:,}".format(results.rows_used) }}
+            </strong>
 
-            </div>
+            <small>
+                Records used
+            </small>
+
+        </div>
+
+    </div>
 
 
-            <h1>
-                Decision Tree Regression
-            </h1>
+    <!-- FEATURES -->
 
+    <div class="tree-stat-card">
+
+        <div class="tree-stat-icon blue">
+            🌿
+        </div>
+
+        <div>
+
+            <span>
+                Features
+            </span>
+
+            <strong>
+                {{ results.feature_count }}
+            </strong>
+
+            <small>
+                Input variables
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- DEPTH -->
+
+    <div class="tree-stat-card">
+
+        <div class="tree-stat-icon orange">
+            🌳
+        </div>
+
+        <div>
+
+            <span>
+                Tree Depth
+            </span>
+
+            <strong>
+                {{ results.tree_depth }}
+            </strong>
+
+            <small>
+                Maximum depth
+            </small>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     MODULES
+========================================================= -->
+
+<section class="tree-modules">
+
+    <div class="tree-module-header">
+
+        <div>
+
+            <span class="tree-section-label">
+                DECISION TREE PIPELINE
+            </span>
+
+            <h2>
+                Tree Analysis Modules
+            </h2>
 
             <p>
-                Predict Crop Yield using tree-based learning.
+                Explore the tree structure, performance,
+                feature importance and predictions.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="tree-module-buttons">
+
+
+        <button
+            class="tree-module active"
+            onclick="showSection('overview', this)">
+
+            🌳 Overview
+
+        </button>
+
+
+        <button
+            class="tree-module"
+            onclick="showSection('tree', this)">
+
+            🌲 Tree Structure
+
+        </button>
+
+
+        <button
+            class="tree-module"
+            onclick="showSection('metrics', this)">
+
+            🎯 Metrics
+
+        </button>
+
+
+        <button
+            class="tree-module"
+            onclick="showSection('importance', this)">
+
+            ⭐ Feature Importance
+
+        </button>
+
+
+        <button
+            class="tree-module"
+            onclick="showSection('predictions', this)">
+
+            📋 Predictions
+
+        </button>
+
+
+        <button
+            class="tree-module"
+            onclick="showSection('residuals', this)">
+
+            📉 Error Analysis
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     OVERVIEW
+========================================================= -->
+
+<section
+    id="overview"
+    class="tree-section active">
+
+
+    <div class="tree-section-title">
+
+        <div>
+
+            <span>
+                TREE REGRESSION
+            </span>
+
+            <h2>
+                Crop Yield Decision Tree
+            </h2>
+
+            <p>
+                The model recursively splits the data into
+                smaller groups using feature thresholds
+                to predict Yield.
             </p>
 
         </div>
 
 
-        <button
-            class="run-button"
-            onclick="runTree()">
+        <div class="tree-badge">
+            ✓ Trained
+        </div>
 
-            ▶ Run Decision Tree
-
-        </button>
+    </div>
 
 
-    </header>
+    <!-- INFO GRID -->
+
+    <div class="tree-info-grid">
 
 
+        <div class="tree-info-card">
 
-    <!-- =================================================
-         ERROR
-    ================================================= -->
+            <span>
+                Algorithm
+            </span>
 
-    {% if error %}
+            <strong>
+                Decision Tree Regressor
+            </strong>
 
-    <div class="error">
+            <p>
+                Supervised machine learning algorithm.
+            </p>
 
-        <strong>
-            Decision Tree Error
-        </strong>
+        </div>
 
-        <p>
-            {{ error }}
-        </p>
+
+        <div class="tree-info-card">
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                Yield
+            </strong>
+
+            <p>
+                Continuous crop yield prediction.
+            </p>
+
+        </div>
+
+
+        <div class="tree-info-card">
+
+            <span>
+                Split Criterion
+            </span>
+
+            <strong>
+                Squared Error
+            </strong>
+
+            <p>
+                Uses reduction in prediction error.
+            </p>
+
+        </div>
+
+
+        <div class="tree-info-card">
+
+            <span>
+                Tree Leaves
+            </span>
+
+            <strong>
+                {{ results.leaf_count }}
+            </strong>
+
+            <p>
+                Final prediction regions.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- HOW TREE WORKS -->
+
+    <div class="tree-concept-card">
+
+        <span>
+            HOW THE TREE WORKS
+        </span>
+
+
+        <div class="tree-flow">
+
+
+            <div class="tree-flow-item">
+
+                <b>
+                    Dataset
+                </b>
+
+                <small>
+                    Crop Yield data
+                </small>
+
+            </div>
+
+
+            <i>→</i>
+
+
+            <div class="tree-flow-item">
+
+                <b>
+                    Feature Split
+                </b>
+
+                <small>
+                    Find best threshold
+                </small>
+
+            </div>
+
+
+            <i>→</i>
+
+
+            <div class="tree-flow-item">
+
+                <b>
+                    Branch
+                </b>
+
+                <small>
+                    Left / Right
+                </small>
+
+            </div>
+
+
+            <i>→</i>
+
+
+            <div class="tree-flow-item">
+
+                <b>
+                    Leaf
+                </b>
+
+                <small>
+                    Predicted Yield
+                </small>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTUAL VS PREDICTED -->
+
+    {% if results.actual_predicted_plot %}
+
+    <div class="tree-panel tree-chart">
+
+        <h3>
+            Actual vs Predicted Crop Yield
+        </h3>
+
+        <img
+            src="data:image/png;base64,{{ results.actual_predicted_plot }}"
+            alt="Actual vs Predicted Crop Yield">
 
     </div>
 
     {% endif %}
 
 
+</section>
 
-    {% if results %}
 
+<!-- =========================================================
+     TREE STRUCTURE
+========================================================= -->
 
-    <!-- =================================================
-         SUMMARY
-    ================================================= -->
+<section
+    id="tree"
+    class="tree-section">
 
-    <section class="summary">
 
+    <div class="tree-section-title">
 
-        <div class="card">
-
-            <div class="icon blue">
-                🌾
-            </div>
-
-            <div>
-
-                <small>
-                    Target
-                </small>
-
-                <strong>
-                    Yield
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon purple">
-                ▦
-            </div>
-
-            <div>
-
-                <small>
-                    Dataset Rows
-                </small>
-
-                <strong>
-                    {{ "{:,}".format(
-                        results.rows_used
-                    ) }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon green">
-                🌿
-            </div>
-
-            <div>
-
-                <small>
-                    Features
-                </small>
-
-                <strong>
-                    {{ results.feature_count }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="icon orange">
-                🌳
-            </div>
-
-            <div>
-
-                <small>
-                    Tree Depth
-                </small>
-
-                <strong>
-                    {{ results.tree_depth }}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =================================================
-         MODULES
-    ================================================= -->
-
-    <section class="modules">
-
-
-        <h2>
-            Tree Analysis Modules
-        </h2>
-
-
-        <p>
-            Explore the tree structure, performance,
-            feature importance and predictions.
-        </p>
-
-
-        <div class="module-buttons">
-
-
-            <button
-                class="module active"
-                onclick="showSection(
-                    'overview',
-                    this
-                )">
-
-                🌳 Overview
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'tree',
-                    this
-                )">
-
-                🌲 Tree Structure
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'metrics',
-                    this
-                )">
-
-                🎯 Metrics
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'importance',
-                    this
-                )">
-
-                ⭐ Feature Importance
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'predictions',
-                    this
-                )">
-
-                📋 Predictions
-
-            </button>
-
-
-            <button
-                class="module"
-                onclick="showSection(
-                    'residuals',
-                    this
-                )">
-
-                📉 Error Analysis
-
-            </button>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         OVERVIEW
-    ================================================= -->
-
-    <section
-        id="overview"
-        class="section active-section">
-
-
-        <div class="section-title">
-
-            <div>
-
-                <span>
-                    TREE REGRESSION
-                </span>
-
-                <h2>
-                    Crop Yield Decision Tree
-                </h2>
-
-                <p>
-                    The model recursively splits the data into
-                    smaller groups using feature thresholds
-                    to predict Yield.
-                </p>
-
-            </div>
-
-
-            <div class="badge">
-                ✓ Trained
-            </div>
-
-        </div>
-
-
-
-        <div class="info-grid">
-
-
-            <div class="info-card">
-
-                <span>
-                    Algorithm
-                </span>
-
-                <strong>
-                    Decision Tree Regressor
-                </strong>
-
-                <p>
-                    Supervised machine learning algorithm.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <span>
-                    Target
-                </span>
-
-                <strong>
-                    Yield
-                </strong>
-
-                <p>
-                    Continuous crop yield prediction.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <span>
-                    Split Criterion
-                </span>
-
-                <strong>
-                    Squared Error
-                </strong>
-
-                <p>
-                    Uses reduction in prediction error.
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <span>
-                    Tree Leaves
-                </span>
-
-                <strong>
-                    {{ results.leaf_count }}
-                </strong>
-
-                <p>
-                    Final prediction regions.
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- CONCEPT -->
-
-        <div class="concept-card">
+        <div>
 
             <span>
-                HOW THE TREE WORKS
+                TREE STRUCTURE
             </span>
 
+            <h2>
+                Decision Tree Visualization
+            </h2>
 
-            <div class="flow">
+            <p>
+                The displayed tree is limited to depth 4
+                for readability. The trained model has
+                depth {{ results.tree_depth }}.
+            </p>
 
+        </div>
 
-                <div>
-                    <b>
-                        Dataset
-                    </b>
-
-                    <small>
-                        Crop Yield data
-                    </small>
-                </div>
-
-
-                <i>→</i>
+    </div>
 
 
-                <div>
-                    <b>
-                        Feature Split
-                    </b>
+    <!-- TREE STATISTICS -->
 
-                    <small>
-                        Find best threshold
-                    </small>
-                </div>
+    <div class="tree-structure-stats">
 
 
-                <i>→</i>
+        <div>
 
+            <small>
+                Depth
+            </small>
 
-                <div>
-                    <b>
-                        Branch
-                    </b>
-
-                    <small>
-                        Left / Right
-                    </small>
-                </div>
-
-
-                <i>→</i>
-
-
-                <div>
-                    <b>
-                        Leaf
-                    </b>
-
-                    <small>
-                        Predicted Yield
-                    </small>
-                </div>
-
-
-            </div>
+            <strong>
+                {{ results.tree_depth }}
+            </strong>
 
         </div>
 
 
+        <div>
 
-        {% if results.actual_predicted_plot %}
+            <small>
+                Nodes
+            </small>
 
-        <div class="panel chart">
+            <strong>
+                {{ results.node_count }}
+            </strong>
 
-            <h3>
-                Actual vs Predicted Crop Yield
-            </h3>
+        </div>
 
-            <img
-                src="data:image/png;base64,
-                {{ results.actual_predicted_plot }}">
 
+        <div>
+
+            <small>
+                Leaves
+            </small>
+
+            <strong>
+                {{ results.leaf_count }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                Criterion
+            </small>
+
+            <strong>
+                MSE
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- TREE IMAGE -->
+
+    <div class="tree-panel tree-image">
+
+        {% if results.tree_plot %}
+
+        <img
+            src="data:image/png;base64,{{ results.tree_plot }}"
+            alt="Decision Tree Visualization">
+
+        {% else %}
+
+        <div class="tree-empty">
+            Tree visualization is not available.
         </div>
 
         {% endif %}
 
-
-    </section>
-
+    </div>
 
 
-    <!-- =================================================
-         TREE STRUCTURE
-    ================================================= -->
+    <!-- TERMINOLOGY -->
 
-    <section
-        id="tree"
-        class="section">
+    <div class="tree-concept-card">
+
+        <span>
+            TREE TERMINOLOGY
+        </span>
 
 
-        <div class="section-title">
+        <div class="tree-terminology">
+
 
             <div>
 
-                <span>
-                    TREE STRUCTURE
-                </span>
-
-                <h2>
-                    Decision Tree Visualization
-                </h2>
+                <strong>
+                    Root Node
+                </strong>
 
                 <p>
-                    The displayed tree is limited to depth 4
-                    for readability. The trained model has
-                    depth {{ results.tree_depth }}.
+                    The first decision made by the tree.
                 </p>
 
             </div>
 
-        </div>
-
-
-        <div class="tree-stats">
-
 
             <div>
-                <small>Depth</small>
+
                 <strong>
-                    {{ results.tree_depth }}
+                    Internal Node
                 </strong>
+
+                <p>
+                    A feature threshold used to split data.
+                </p>
+
             </div>
 
 
             <div>
-                <small>Nodes</small>
+
                 <strong>
-                    {{ results.node_count }}
+                    Branch
                 </strong>
+
+                <p>
+                    The path taken after a decision.
+                </p>
+
             </div>
 
 
             <div>
-                <small>Leaves</small>
+
                 <strong>
-                    {{ results.leaf_count }}
+                    Leaf
                 </strong>
+
+                <p>
+                    Final predicted Yield value.
+                </p>
+
             </div>
 
-
-            <div>
-                <small>Criterion</small>
-                <strong>
-                    MSE
-                </strong>
-            </div>
-
-
-        </div>
-
-
-        <div class="panel tree-image">
-
-            {% if results.tree_plot %}
-
-            <img
-                src="data:image/png;base64,
-                {{ results.tree_plot }}">
-
-            {% endif %}
 
         </div>
 
+    </div>
 
-        <div class="concept-card">
+
+</section>
+
+
+<!-- =========================================================
+     METRICS
+========================================================= -->
+
+<section
+    id="metrics"
+    class="tree-section">
+
+
+    <div class="tree-section-title">
+
+        <div>
 
             <span>
-                TREE TERMINOLOGY
+                MODEL PERFORMANCE
             </span>
 
+            <h2>
+                Decision Tree Metrics
+            </h2>
 
-            <div class="terminology">
+            <p>
+                Regression performance of the Decision Tree model.
+            </p>
 
+        </div>
 
-                <div>
-
-                    <strong>
-                        Root Node
-                    </strong>
-
-                    <p>
-                        The first decision made by the tree.
-                    </p>
-
-                </div>
+    </div>
 
 
-                <div>
-
-                    <strong>
-                        Internal Node
-                    </strong>
-
-                    <p>
-                        A feature threshold used to split data.
-                    </p>
-
-                </div>
+    <div class="tree-metrics-grid">
 
 
-                <div>
+        <div class="tree-metric-card">
 
-                    <strong>
-                        Branch
-                    </strong>
-
-                    <p>
-                        The path taken after a decision.
-                    </p>
-
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        Leaf
-                    </strong>
-
-                    <p>
-                        Final predicted Yield value.
-                    </p>
-
-                </div>
-
-
+            <div class="tree-metric-icon green">
+                R²
             </div>
+
+            <small>
+                Training R²
+            </small>
+
+            <strong>
+                {{ results.train_r2 }}
+            </strong>
+
+            <p>
+                Training explanatory power
+            </p>
 
         </div>
 
 
-    </section>
+        <div class="tree-metric-card">
 
-
-
-    <!-- =================================================
-         METRICS
-    ================================================= -->
-
-    <section
-        id="metrics"
-        class="section">
-
-
-        <div class="section-title">
-
-            <div>
-
-                <span>
-                    MODEL PERFORMANCE
-                </span>
-
-                <h2>
-                    Decision Tree Metrics
-                </h2>
-
+            <div class="tree-metric-icon blue">
+                R²
             </div>
+
+            <small>
+                Testing R²
+            </small>
+
+            <strong>
+                {{ results.test_r2 }}
+            </strong>
+
+            <p>
+                Test-set explanatory power
+            </p>
 
         </div>
 
 
-        <div class="metrics-grid">
+        <div class="tree-metric-card">
 
-
-            <div class="metric-card">
-
-                <small>
-                    Training R²
-                </small>
-
-                <strong>
-                    {{ results.train_r2 }}
-                </strong>
-
-                <p>
-                    Training explanatory power
-                </p>
-
+            <div class="tree-metric-icon purple">
+                MAE
             </div>
 
+            <small>
+                MAE
+            </small>
 
-            <div class="metric-card">
+            <strong>
+                {{ results.mae }}
+            </strong>
 
-                <small>
-                    Testing R²
-                </small>
-
-                <strong>
-                    {{ results.test_r2 }}
-                </strong>
-
-                <p>
-                    Test-set explanatory power
-                </p>
-
-            </div>
-
-
-            <div class="metric-card">
-
-                <small>
-                    MAE
-                </small>
-
-                <strong>
-                    {{ results.mae }}
-                </strong>
-
-                <p>
-                    Mean Absolute Error
-                </p>
-
-            </div>
-
-
-            <div class="metric-card">
-
-                <small>
-                    RMSE
-                </small>
-
-                <strong>
-                    {{ results.rmse }}
-                </strong>
-
-                <p>
-                    Root Mean Squared Error
-                </p>
-
-            </div>
-
+            <p>
+                Mean Absolute Error
+            </p>
 
         </div>
 
 
+        <div class="tree-metric-card">
 
-        <div class="metric-explanation">
-
-
-            <div>
-
-                <strong>
-                    R²
-                </strong>
-
-                <p>
-                    Measures how much variation in Yield
-                    is explained by the model.
-                </p>
-
+            <div class="tree-metric-icon orange">
+                RMSE
             </div>
 
+            <small>
+                RMSE
+            </small>
 
-            <div>
+            <strong>
+                {{ results.rmse }}
+            </strong>
 
-                <strong>
-                    MAE
-                </strong>
-
-                <p>
-                    Average absolute difference between
-                    actual and predicted Yield.
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <strong>
-                    RMSE
-                </strong>
-
-                <p>
-                    Penalizes larger prediction errors more
-                    strongly than MAE.
-                </p>
-
-            </div>
-
+            <p>
+                Root Mean Squared Error
+            </p>
 
         </div>
 
 
-    </section>
+    </div>
 
 
+    <!-- METRIC EXPLANATION -->
 
-    <!-- =================================================
-         IMPORTANCE
-    ================================================= -->
-
-    <section
-        id="importance"
-        class="section">
+    <div class="tree-metric-explanation">
 
 
-        <div class="section-title">
+        <div>
 
-            <div>
+            <strong>
+                R²
+            </strong>
 
-                <span>
-                    FEATURE ANALYSIS
-                </span>
-
-                <h2>
-                    Feature Importance
-                </h2>
-
-                <p>
-                    Shows how much each input feature contributed
-                    to the tree's splitting decisions.
-                </p>
-
-            </div>
+            <p>
+                Measures how much variation in Yield
+                is explained by the model.
+            </p>
 
         </div>
 
 
-        {% if results.feature_importance_plot %}
+        <div>
 
-        <div class="panel chart">
+            <strong>
+                MAE
+            </strong>
 
-            <img
-                src="data:image/png;base64,
-                {{ results.feature_importance_plot }}">
+            <p>
+                Average absolute difference between
+                actual and predicted Yield.
+            </p>
 
         </div>
 
-        {% endif %}
+
+        <div>
+
+            <strong>
+                RMSE
+            </strong>
+
+            <p>
+                Penalizes larger prediction errors more
+                strongly than MAE.
+            </p>
+
+        </div>
 
 
-        <div class="panel">
+    </div>
 
-            <table>
+
+</section>
+
+
+<!-- =========================================================
+     FEATURE IMPORTANCE
+========================================================= -->
+
+<section
+    id="importance"
+    class="tree-section">
+
+
+    <div class="tree-section-title">
+
+        <div>
+
+            <span>
+                FEATURE ANALYSIS
+            </span>
+
+            <h2>
+                Feature Importance
+            </h2>
+
+            <p>
+                Shows how much each input feature contributed
+                to the tree's splitting decisions.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if results.feature_importance_plot %}
+
+    <div class="tree-panel tree-chart">
+
+        <img
+            src="data:image/png;base64,{{ results.feature_importance_plot }}"
+            alt="Feature Importance">
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="tree-panel">
+
+        <div class="tree-table-wrapper">
+
+            <table class="tree-table">
 
                 <thead>
 
@@ -977,26 +926,35 @@
 
                 <tbody>
 
-                {% for item in
-                   results.importance_data[:20] %}
+                    {% for item in results.importance_data[:20] %}
 
                     <tr>
 
                         <td>
-                            {{ loop.index }}
+
+                            <span class="rank-badge">
+                                {{ loop.index }}
+                            </span>
+
                         </td>
 
-                        <td>
+                        <td class="tree-feature-name">
                             {{ item.feature }}
                         </td>
 
                         <td>
-                            {{ item.importance }}
+
+                            <div class="importance-value">
+
+                                {{ item.importance }}
+
+                            </div>
+
                         </td>
 
                     </tr>
 
-                {% endfor %}
+                    {% endfor %}
 
                 </tbody>
 
@@ -1004,56 +962,56 @@
 
         </div>
 
-
-    </section>
-
+    </div>
 
 
-    <!-- =================================================
-         PREDICTIONS
-    ================================================= -->
-
-    <section
-        id="predictions"
-        class="section">
+</section>
 
 
-        <div class="section-title">
+<!-- =========================================================
+     PREDICTIONS
+========================================================= -->
 
-            <div>
-
-                <span>
-                    PREDICTIONS
-                </span>
-
-                <h2>
-                    Crop Yield Predictions
-                </h2>
-
-                <p>
-                    Predictions generated using the test dataset.
-                </p>
-
-            </div>
+<section
+    id="predictions"
+    class="tree-section">
 
 
-            <a
-                href="{{ url_for(
-                    'download_tree_predictions'
-                ) }}"
-                class="download">
+    <div class="tree-section-title">
 
-                ↓ Download CSV
+        <div>
 
-            </a>
+            <span>
+                PREDICTIONS
+            </span>
+
+            <h2>
+                Crop Yield Predictions
+            </h2>
+
+            <p>
+                Predictions generated using the test dataset.
+            </p>
 
         </div>
 
 
-        <div class="panel">
+        <a
+            href="{{ url_for('download_tree_predictions') }}"
+            class="tree-download">
+
+            ↓ Download CSV
+
+        </a>
+
+    </div>
 
 
-            <table>
+    <div class="tree-panel">
+
+        <div class="tree-table-wrapper">
+
+            <table class="tree-table">
 
                 <thead>
 
@@ -1082,8 +1040,7 @@
 
                 <tbody>
 
-                {% for item in
-                   results.sample_predictions %}
+                    {% for item in results.sample_predictions %}
 
                     <tr>
 
@@ -1095,7 +1052,7 @@
                             {{ item.actual }}
                         </td>
 
-                        <td>
+                        <td class="predicted-value">
                             {{ item.predicted }}
                         </td>
 
@@ -1105,115 +1062,108 @@
 
                     </tr>
 
-                {% endfor %}
+                    {% endfor %}
 
                 </tbody>
 
             </table>
 
-
         </div>
 
-
-    </section>
-
+    </div>
 
 
-    <!-- =================================================
-         RESIDUALS
-    ================================================= -->
-
-    <section
-        id="residuals"
-        class="section">
+</section>
 
 
-        <div class="section-title">
+<!-- =========================================================
+     RESIDUALS
+========================================================= -->
 
-            <div>
-
-                <span>
-                    ERROR ANALYSIS
-                </span>
-
-                <h2>
-                    Residual Analysis
-                </h2>
-
-                <p>
-                    Difference between actual and predicted Yield.
-                </p>
-
-            </div>
-
-        </div>
+<section
+    id="residuals"
+    class="tree-section">
 
 
-        {% if results.residual_plot %}
+    <div class="tree-section-title">
 
-        <div class="panel chart">
-
-            <img
-                src="data:image/png;base64,
-                {{ results.residual_plot }}">
-
-        </div>
-
-        {% endif %}
-
-
-        <div class="concept-card">
+        <div>
 
             <span>
-                RESIDUAL FORMULA
+                ERROR ANALYSIS
             </span>
 
-
-            <div class="formula">
-
-                Residual =
-                Actual Yield − Predicted Yield
-
-            </div>
-
+            <h2>
+                Residual Analysis
+            </h2>
 
             <p>
-                A residual close to zero means that the
-                prediction is close to the actual Yield.
+                Difference between actual and predicted Yield.
             </p>
 
         </div>
 
+    </div>
 
-    </section>
 
+    {% if results.residual_plot %}
 
+    <div class="tree-panel tree-chart">
+
+        <img
+            src="data:image/png;base64,{{ results.residual_plot }}"
+            alt="Residual Analysis">
+
+    </div>
 
     {% endif %}
 
 
-</main>
+    <div class="tree-concept-card">
+
+        <span>
+            RESIDUAL FORMULA
+        </span>
 
 
+        <div class="tree-formula">
 
-<!-- =====================================================
+            Residual =
+            Actual Yield − Predicted Yield
+
+        </div>
+
+
+        <p>
+            A residual close to zero means that the
+            prediction is close to the actual Yield.
+        </p>
+
+    </div>
+
+
+</section>
+
+
+{% endif %}
+
+
+<!-- =========================================================
      LOADING
-===================================================== -->
+========================================================= -->
 
 <div
     id="loading"
-    class="loading">
+    class="tree-loading">
 
 
-    <div class="loading-box">
+    <div class="tree-loading-box">
 
-        <div class="spinner"></div>
-
+        <div class="tree-spinner"></div>
 
         <h3>
             Training Decision Tree
         </h3>
-
 
         <p>
             Analyzing Crop Yield data...
@@ -1225,50 +1175,34 @@
 </div>
 
 
-
 <script>
 
-function showSection(
-    id,
-    button
-) {
+function showSection(id, button) {
 
     document
-        .querySelectorAll(".section")
-        .forEach(
-            function(section) {
+        .querySelectorAll(".tree-section")
+        .forEach(function(section) {
 
-                section.classList.remove(
-                    "active-section"
-                );
+            section.classList.remove("active");
 
-            }
-        );
+        });
 
 
     document
-        .querySelectorAll(".module")
-        .forEach(
-            function(btn) {
+        .querySelectorAll(".tree-module")
+        .forEach(function(btn) {
 
-                btn.classList.remove(
-                    "active"
-                );
+            btn.classList.remove("active");
 
-            }
-        );
+        });
 
 
     document
         .getElementById(id)
-        .classList.add(
-            "active-section"
-        );
+        .classList.add("active");
 
 
-    button.classList.add(
-        "active"
-    );
+    button.classList.add("active");
 
 }
 
@@ -1280,24 +1214,16 @@ function runTree() {
         .classList.add("show");
 
 
-    setTimeout(
+    setTimeout(function() {
 
-        function() {
+        window.location.href =
+            "{{ url_for('trees_page') }}";
 
-            window.location.href =
-                "{{ url_for('trees_page') }}";
-
-        },
-
-        300
-
-    );
+    }, 300);
 
 }
 
 </script>
 
 
-</body>
-
-</html>
+{% endblock %}

@@ -1,163 +1,417 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Crop Yield Prediction Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-<!-- Top Header -->
-<header class="topbar">
-    <h1>🌾 Crop Yield Analysis Dashboard</h1>
-</header>
+{% block title %}
+Crop Yield AI Dashboard
+{% endblock %}
 
-<div class="layout">
 
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <ul>
-            <li>
-                <a href="{{ url_for('data_loading') }}"
-                   class="menu-item {% if active == 'data-loading' %}active{% endif %}">
-                    📂 Data Loading
-                </a>
-            </li>
+{% block content %}
 
-            <li>
-                <a href="{{ url_for('eda_page') }}"
-                   class="menu-item {% if active == 'eda' %}active{% endif %}">
-                    📊 EDA Analysis
-                </a>
-            </li>
-            <a href="{{ url_for('linear_regression_page') }}"
-   class="{% if active == 'linear-regression' %}active{% endif %}">
+<!-- ================================================= -->
+<!-- PAGE HEADER -->
+<!-- ================================================= -->
 
-    📈
+<div class="page-header">
 
-    <span>Linear Regression</span>
+    <div>
 
-</a>
+        <div class="breadcrumb">
+            Dashboard / Overview
+        </div>
 
-             <li>
-    <a
-        href="{{ url_for('preprocessing_page') }}"
-        class="menu-item
-        {% if active == 'preprocessing' %}
-        active
-        {% endif %}"
-    >
-        Preprocessing
-    </a>
-</li>
-            <li>
-                <a href="/logistic-regression"
-   class="{% if active == 'logistic-regression' %}active{% endif %}">
-    Logistic Regression
-</a>
-            </li>
-            <li>
-                <a
-    href="{{ url_for('trees_page') }}"
-    class="{% if active == 'trees' %}active{% endif %}">
+        <h1>
+            Crop Yield Analytics
+        </h1>
 
-    🌳
+        <p>
+            Analyze, preprocess and predict agricultural
+            crop yield using machine learning.
+        </p>
 
-    <span>
-        Trees
-    </span>
+    </div>
 
-</a>
-            </li>
-            <li class="menu-item disabled">🤖 Model Training (soon)</li>
-            <li class="menu-item disabled">📈 Prediction (soon)</li>
-        </ul>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="content">
+    <div class="header-badge">
 
-        <!-- Default Screen -->
-        {% if active == 'none' %}
-            <h2>Welcome</h2>
-            <p>
-                This dashboard helps you analyze crop yield data using
-                Exploratory Data Analysis (EDA).
-            </p>
+        🌾
 
-            <ul>
-                <li>✔ View dataset summary</li>
-                <li>✔ Analyze missing values</li>
-                <li>✔ Visualize crop patterns</li>
-                <li>✔ Study rainfall vs yield</li>
-            </ul>
+        Crop Yield Dataset
 
-            <p>👉 Select an option from the left panel to begin.</p>
-        {% endif %}
-
-        <!-- DATA LOADING SECTION -->
-        {% if active == 'data-loading' %}
-            <h2>📂 Data Loading</h2>
-
-            {% if error %}
-                <div class="error">{{ error }}</div>
-            {% endif %}
-
-            {% if summary %}
-                <table class="summary-table">
-                    <tr><td>Total Rows</td><td>{{ summary.n_rows }}</td></tr>
-                    <tr><td>Total Columns</td><td>{{ summary.n_cols }}</td></tr>
-                </table>
-
-                <h3>📌 Column Information</h3>
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Column</th>
-                                <th>Data Type</th>
-                                <th>Missing Values</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for col in summary.columns %}
-                            <tr>
-                                <td>{{ col }}</td>
-                                <td>{{ summary.dtypes[col] }}</td>
-                                <td>{{ summary.missing_counts[col] }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3>🔍 Data Preview (Top 10 Rows)</h3>
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                {% for col in summary.columns %}
-                                    <th>{{ col }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for row in summary.preview %}
-                            <tr>
-                                {% for col in summary.columns %}
-                                    <td>{{ row[col] }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
-        {% endif %}
-
-    </main>
+    </div>
 
 </div>
 
-</body>
-</html>
+
+<!-- ================================================= -->
+<!-- SUMMARY CARDS -->
+<!-- ================================================= -->
+
+<div class="dashboard-grid">
+
+
+    <!-- DATASET -->
+
+    <div class="dashboard-card">
+
+        <div class="card-icon blue">
+            📊
+        </div>
+
+        <div>
+
+            <span class="card-label">
+                Dataset
+            </span>
+
+            <h2>
+                Crop Yield
+            </h2>
+
+            <p>
+                Agricultural Dataset
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECORDS -->
+
+    <div class="dashboard-card">
+
+        <div class="card-icon green">
+            📋
+        </div>
+
+        <div>
+
+            <span class="card-label">
+                Records
+            </span>
+
+            <h2>
+                19,689
+            </h2>
+
+            <p>
+                Crop observations
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <div class="dashboard-card">
+
+        <div class="card-icon purple">
+            🔢
+        </div>
+
+        <div>
+
+            <span class="card-label">
+                Features
+            </span>
+
+            <h2>
+                10
+            </h2>
+
+            <p>
+                Input variables
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TARGET -->
+
+    <div class="dashboard-card">
+
+        <div class="card-icon orange">
+            🎯
+        </div>
+
+        <div>
+
+            <span class="card-label">
+                Target
+            </span>
+
+            <h2>
+                Yield
+            </h2>
+
+            <p>
+                Prediction variable
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- WELCOME CARD -->
+<!-- ================================================= -->
+
+<div class="welcome-card">
+
+    <div class="welcome-content">
+
+        <span class="section-label">
+            CROP YIELD ANALYTICS
+        </span>
+
+        <h2>
+            Welcome to CropYield AI
+        </h2>
+
+        <p>
+            Explore your crop yield dataset from data loading
+            through preprocessing, visualization and machine
+            learning prediction.
+        </p>
+
+
+        <div class="feature-list">
+
+            <div class="feature-item">
+
+                <span>✓</span>
+
+                <div>
+
+                    <strong>
+                        Data Loading
+                    </strong>
+
+                    <small>
+                        Inspect dataset structure and records.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-item">
+
+                <span>✓</span>
+
+                <div>
+
+                    <strong>
+                        EDA
+                    </strong>
+
+                    <small>
+                        Discover patterns and relationships.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-item">
+
+                <span>✓</span>
+
+                <div>
+
+                    <strong>
+                        Preprocessing
+                    </strong>
+
+                    <small>
+                        Clean, encode and scale the dataset.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-item">
+
+                <span>✓</span>
+
+                <div>
+
+                    <strong>
+                        Machine Learning
+                    </strong>
+
+                    <small>
+                        Build models for crop yield analysis.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="welcome-visual">
+
+        <div class="crop-circle">
+
+            🌾
+
+        </div>
+
+        <span>
+            AI Powered
+        </span>
+
+        <strong>
+            Crop Analytics
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- QUICK ACTIONS -->
+<!-- ================================================= -->
+
+<div class="section-heading">
+
+    <div>
+
+        <h2>
+            Quick Actions
+        </h2>
+
+        <p>
+            Start exploring your dataset
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="quick-grid">
+
+
+    <a href="{{ url_for('data_loading') }}"
+       class="quick-card">
+
+        <span class="quick-icon">
+            📁
+        </span>
+
+        <div>
+
+            <strong>
+                Data Loading
+            </strong>
+
+            <span>
+                View dataset
+            </span>
+
+        </div>
+
+        <b>
+            →
+        </b>
+
+    </a>
+
+
+    <a href="{{ url_for('eda_page') }}"
+       class="quick-card">
+
+        <span class="quick-icon">
+            📊
+        </span>
+
+        <div>
+
+            <strong>
+                EDA Analysis
+            </strong>
+
+            <span>
+                Explore patterns
+            </span>
+
+        </div>
+
+        <b>
+            →
+        </b>
+
+    </a>
+
+
+    <a href="{{ url_for('preprocessing_page') }}"
+       class="quick-card">
+
+        <span class="quick-icon">
+            ⚙️
+        </span>
+
+        <div>
+
+            <strong>
+                Preprocessing
+            </strong>
+
+            <span>
+                Prepare data
+            </span>
+
+        </div>
+
+        <b>
+            →
+        </b>
+
+    </a>
+
+
+    <a href="{{ url_for('kmeans_page') }}"
+       class="quick-card">
+
+        <span class="quick-icon">
+            🔵
+        </span>
+
+        <div>
+
+            <strong>
+                K-Means
+            </strong>
+
+            <span>
+                Discover crop groups
+            </span>
+
+        </div>
+
+        <b>
+            →
+        </b>
+
+    </a>
+
+</div>
+
+{% endblock %}

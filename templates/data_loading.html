@@ -1,0 +1,539 @@
+{% extends "base.html" %}
+
+{% block title %}
+Crop Yield - Data Loading
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<div class="top-section">
+
+    <div>
+
+        <div class="breadcrumb">
+            Dashboard / Data Loading
+        </div>
+
+        <h1>
+            Data Loading
+        </h1>
+
+        <p>
+            Load and inspect the Crop Yield dataset before analysis.
+        </p>
+
+    </div>
+
+    <div>
+
+        <a
+            href="{{ url_for('data_loading') }}"
+            class="run-button"
+        >
+            ↻ Reload Dataset
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ERROR
+===================================================== -->
+
+{% if error %}
+
+<div class="error-box">
+
+    <h3>
+        Data Loading Error
+    </h3>
+
+    <p>
+        {{ error }}
+    </p>
+
+</div>
+
+{% endif %}
+
+
+<!-- =====================================================
+     DATASET SUMMARY
+===================================================== -->
+
+{% if summary %}
+
+<section class="data-summary-grid">
+
+    <!-- ROWS -->
+
+    <div class="data-stat-card">
+
+        <div class="data-stat-icon">
+            📋
+        </div>
+
+        <div>
+
+            <span>
+                Total Rows
+            </span>
+
+            <strong>
+                {{ "{:,}".format(summary.n_rows) }}
+            </strong>
+
+            <small>
+                Dataset records
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- COLUMNS -->
+
+    <div class="data-stat-card">
+
+        <div class="data-stat-icon purple">
+            ▦
+        </div>
+
+        <div>
+
+            <span>
+                Total Features
+            </span>
+
+            <strong>
+                {{ summary.n_cols }}
+            </strong>
+
+            <small>
+                Dataset columns
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- MISSING -->
+
+    <div class="data-stat-card">
+
+        <div class="data-stat-icon orange">
+            !
+        </div>
+
+        <div>
+
+            <span>
+                Missing Values
+            </span>
+
+            <strong>
+                {{ summary.missing_counts.values()|sum }}
+            </strong>
+
+            <small>
+                Values requiring attention
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- DATASET -->
+
+    <div class="data-stat-card">
+
+        <div class="data-stat-icon green">
+            ✓
+        </div>
+
+        <div>
+
+            <span>
+                Dataset Status
+            </span>
+
+            <strong>
+                Ready
+            </strong>
+
+            <small>
+                Crop dataset loaded
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DATASET INFORMATION
+===================================================== -->
+
+<section class="data-card">
+
+    <div class="data-card-header">
+
+        <div>
+
+            <span class="section-label">
+                DATASET
+            </span>
+
+            <h2>
+                Crop Yield Dataset
+            </h2>
+
+            <p>
+                Basic information about the loaded agricultural dataset.
+            </p>
+
+        </div>
+
+        <div class="ready-badge">
+            ✓ Dataset Loaded
+        </div>
+
+    </div>
+
+
+    <!-- DATASET DETAILS -->
+
+    <div class="dataset-info-grid">
+
+        <div>
+
+            <span>
+                File
+            </span>
+
+            <strong>
+                crop_yield.csv
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Rows
+            </span>
+
+            <strong>
+                {{ "{:,}".format(summary.n_rows) }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Features
+            </span>
+
+            <strong>
+                {{ summary.n_cols }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                Yield
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COLUMN INFORMATION
+===================================================== -->
+
+<section class="data-card">
+
+    <div class="data-card-header">
+
+        <div>
+
+            <span class="section-label">
+                SCHEMA
+            </span>
+
+            <h2>
+                Column Information
+            </h2>
+
+            <p>
+                Data types and missing values for every feature.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table class="data-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        #
+                    </th>
+
+                    <th>
+                        Column
+                    </th>
+
+                    <th>
+                        Data Type
+                    </th>
+
+                    <th>
+                        Missing Values
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for col in summary.columns %}
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+                    <td>
+
+                        <strong class="column-name">
+                            {{ col }}
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        <span class="type-badge">
+                            {{ summary.dtypes[col] }}
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {{ summary.missing_counts[col] }}
+
+                    </td>
+
+                    <td>
+
+                        {% if summary.missing_counts[col] == 0 %}
+
+                            <span class="status-good">
+                                ✓ Complete
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-warning">
+                                ⚠ Missing
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DATA PREVIEW
+===================================================== -->
+
+<section class="data-card">
+
+    <div class="data-card-header">
+
+        <div>
+
+            <span class="section-label">
+                PREVIEW
+            </span>
+
+            <h2>
+                Dataset Preview
+            </h2>
+
+            <p>
+                First 10 records from the Crop Yield dataset.
+            </p>
+
+        </div>
+
+        <div class="preview-badge">
+            Top 10 Rows
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper preview-table">
+
+        <table class="data-table">
+
+            <thead>
+
+                <tr>
+
+                    {% for col in summary.columns %}
+
+                    <th>
+                        {{ col }}
+                    </th>
+
+                    {% endfor %}
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for row in summary.preview %}
+
+                <tr>
+
+                    {% for col in summary.columns %}
+
+                    <td>
+
+                        {% if row[col] is none %}
+
+                            <span class="null-value">
+                                NULL
+                            </span>
+
+                        {% else %}
+
+                            {{ row[col] }}
+
+                        {% endif %}
+
+                    </td>
+
+                    {% endfor %}
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DATASET COLUMNS
+===================================================== -->
+
+<section class="data-card">
+
+    <div class="data-card-header">
+
+        <div>
+
+            <span class="section-label">
+                FEATURES
+            </span>
+
+            <h2>
+                Dataset Features
+            </h2>
+
+            <p>
+                Columns available for EDA, preprocessing and modeling.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="feature-list">
+
+        {% for col in summary.columns %}
+
+        <div class="feature-pill">
+
+            <span>
+                {{ loop.index }}
+            </span>
+
+            {{ col }}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+{% endblock %}

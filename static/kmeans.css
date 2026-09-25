@@ -1,0 +1,1063 @@
+/* =========================================================
+   K-MEANS CLUSTERING
+   GREEN DASHBOARD THEME
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.top-section {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 25px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.breadcrumb {
+
+    color: #8b9a93;
+
+    font-size: 10px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.top-section h1 {
+
+    margin: 0;
+
+    color: #17261f;
+
+    font-size: 29px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.6px;
+
+}
+
+
+.top-section p {
+
+    color: #7f9087;
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+}
+
+
+/* =========================================================
+   RUN BUTTON
+   ========================================================= */
+
+.kmeans-run-button {
+
+    border: none;
+
+    padding: 12px 19px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #159b59,
+            #1db867
+        );
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px
+        rgba(21,155,89,0.22);
+
+    transition: 0.2s ease;
+
+}
+
+
+.kmeans-run-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px
+        rgba(21,155,89,0.28);
+
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.kmeans-error {
+
+    background: #fff1f2;
+
+    border: 1px solid #fecdd3;
+
+    border-left: 4px solid #dc2626;
+
+    color: #a91d35;
+
+    padding: 16px 18px;
+
+    border-radius: 10px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.kmeans-error h3 {
+
+    font-size: 13px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.kmeans-error p {
+
+    font-size: 10px;
+
+    margin: 0;
+
+}
+
+
+/* =========================================================
+   MODULE CARD
+   ========================================================= */
+
+.kmeans-module-card {
+
+    background: white;
+
+    border: 1px solid #e3ebe6;
+
+    border-radius: 13px;
+
+    padding: 22px;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(26,58,42,0.045);
+
+}
+
+
+.kmeans-module-heading > span {
+
+    color: #169755;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+}
+
+
+.kmeans-module-heading h2 {
+
+    color: #1c2b23;
+
+    font-size: 18px;
+
+    margin: 5px 0;
+
+}
+
+
+.kmeans-module-heading p {
+
+    color: #899991;
+
+    font-size: 10px;
+
+    margin-bottom: 18px;
+
+}
+
+
+/* =========================================================
+   METHOD BUTTONS
+   ========================================================= */
+
+.kmeans-method-buttons {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+}
+
+
+.kmeans-method-form {
+
+    width: 100%;
+
+}
+
+
+.kmeans-method-card {
+
+    width: 100%;
+
+    min-height: 86px;
+
+    border: 1px solid #dfe9e3;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    padding: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-align: left;
+
+    color: #34483e;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+button.kmeans-method-card {
+
+    font-family: inherit;
+
+}
+
+
+.kmeans-method-card:hover {
+
+    border-color: #20a765;
+
+    background: #f7fcf9;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 15px
+        rgba(26,58,42,0.07);
+
+}
+
+
+.kmeans-method-card.manual {
+
+    cursor: default;
+
+    display: block;
+
+}
+
+
+.kmeans-method-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.kmeans-method-title strong {
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   METHOD ICONS
+   ========================================================= */
+
+.method-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 16px;
+
+}
+
+
+.method-icon.green {
+
+    background: #e8f8ef;
+
+}
+
+
+.method-icon.purple {
+
+    background: #f0ebff;
+
+}
+
+
+.method-icon.blue {
+
+    background: #eaf2ff;
+
+}
+
+
+/* =========================================================
+   METHOD DESCRIPTION
+   ========================================================= */
+
+.kmeans-method-card > span:last-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.kmeans-method-card strong {
+
+    font-size: 11px;
+
+    color: #2a3b32;
+
+}
+
+
+.kmeans-method-card small {
+
+    color: #899991;
+
+    font-size: 8px;
+
+    line-height: 1.4;
+
+}
+
+
+/* =========================================================
+   MANUAL INPUT
+   ========================================================= */
+
+.kmeans-manual-input {
+
+    margin-top: 12px;
+
+    background: #f5faf7;
+
+    border: 1px solid #e2eee7;
+
+    border-radius: 8px;
+
+    padding: 10px;
+
+}
+
+
+.kmeans-manual-input label {
+
+    display: block;
+
+    color: #788a80;
+
+    font-size: 9px;
+
+    margin-bottom: 6px;
+
+}
+
+
+.kmeans-input-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.kmeans-input-row input {
+
+    width: 65px;
+
+    padding: 8px;
+
+    border: 1px solid #d5e3dc;
+
+    border-radius: 6px;
+
+    outline: none;
+
+    color: #26382f;
+
+    background: white;
+
+    font-size: 10px;
+
+}
+
+
+.kmeans-input-row input:focus {
+
+    border-color: #20a765;
+
+}
+
+
+.kmeans-calculate-button {
+
+    border: none;
+
+    padding: 8px 11px;
+
+    border-radius: 6px;
+
+    background: #168f50;
+
+    color: white;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.kmeans-calculate-button:hover {
+
+    background: #127c45;
+
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.kmeans-stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.kmeans-stat-card {
+
+    background: white;
+
+    border: 1px solid #e3ebe6;
+
+    border-radius: 12px;
+
+    padding: 17px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(26,58,42,0.035);
+
+    transition: 0.2s ease;
+
+}
+
+
+.kmeans-stat-card:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
+.kmeans-stat-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    min-width: 40px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+}
+
+
+.kmeans-stat-icon.green {
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+}
+
+
+.kmeans-stat-icon.purple {
+
+    background: #f0ebff;
+
+    color: #6b54e8;
+
+}
+
+
+.kmeans-stat-icon.blue {
+
+    background: #eaf2ff;
+
+    color: #3476d4;
+
+}
+
+
+.kmeans-stat-icon.orange {
+
+    background: #fff1df;
+
+    color: #d97706;
+
+}
+
+
+.kmeans-stat-card span {
+
+    display: block;
+
+    color: #8b9993;
+
+    font-size: 8px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.kmeans-stat-card strong {
+
+    display: block;
+
+    color: #24352c;
+
+    font-size: 17px;
+
+}
+
+
+/* =========================================================
+   RESULT CARD
+   ========================================================= */
+
+.kmeans-result-card {
+
+    background: white;
+
+    border: 1px solid #e3ebe6;
+
+    border-radius: 13px;
+
+    padding: 22px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(26,58,42,0.04);
+
+}
+
+
+.kmeans-result-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.kmeans-label {
+
+    display: block;
+
+    color: #169755;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.kmeans-result-header h2 {
+
+    color: #1d2d24;
+
+    font-size: 18px;
+
+    margin: 0 0 5px;
+
+}
+
+
+.kmeans-result-header p {
+
+    color: #899991;
+
+    font-size: 10px;
+
+    margin: 0;
+
+}
+
+
+.kmeans-result-header p strong {
+
+    color: #16834d;
+
+}
+
+
+.kmeans-badge {
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+    padding: 8px 13px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+.kmeans-chart-container {
+
+    width: 100%;
+
+    background: #f7faf8;
+
+    border: 1px solid #e5eee9;
+
+    border-radius: 10px;
+
+    padding: 14px;
+
+    text-align: center;
+
+    overflow-x: auto;
+
+}
+
+
+.kmeans-chart-container img {
+
+    max-width: 100%;
+
+    width: 850px;
+
+    height: auto;
+
+    border-radius: 7px;
+
+    display: inline-block;
+
+}
+
+
+/* =========================================================
+   CLUSTER GRID
+   ========================================================= */
+
+.kmeans-cluster-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 13px;
+
+}
+
+
+.kmeans-cluster-card {
+
+    border: 1px solid #e2ebe6;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    transition: 0.2s ease;
+
+}
+
+
+.kmeans-cluster-card:hover {
+
+    border-color: #b9dfc9;
+
+    background: #f9fcfa;
+
+}
+
+
+.kmeans-cluster-number {
+
+    width: 43px;
+
+    height: 43px;
+
+    min-width: 43px;
+
+    border-radius: 50%;
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 800;
+
+    font-size: 13px;
+
+}
+
+
+.kmeans-cluster-card span {
+
+    display: block;
+
+    color: #899991;
+
+    font-size: 8px;
+
+}
+
+
+.kmeans-cluster-card strong {
+
+    display: block;
+
+    color: #2b3d33;
+
+    font-size: 12px;
+
+    margin-top: 4px;
+
+}
+
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+.kmeans-download-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef9f3,
+            #f8fcf9
+        );
+
+    border: 1px solid #d7ecdf;
+
+    border-radius: 13px;
+
+    padding: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+.kmeans-download-card > div > span {
+
+    display: block;
+
+    color: #16834d;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.kmeans-download-card h3 {
+
+    color: #26382f;
+
+    font-size: 15px;
+
+    margin: 0 0 5px;
+
+}
+
+
+.kmeans-download-card p {
+
+    color: #7f9087;
+
+    font-size: 10px;
+
+    margin: 0;
+
+}
+
+
+.kmeans-download-button {
+
+    text-decoration: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #159b59,
+            #1db867
+        );
+
+    color: white;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 5px 14px
+        rgba(21,155,89,0.18);
+
+    transition: 0.2s ease;
+
+}
+
+
+.kmeans-download-button:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(21,155,89,0.25);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1150px) {
+
+    .kmeans-stats-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+
+    .kmeans-cluster-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .kmeans-method-buttons {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .kmeans-stats-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .top-section {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+    }
+
+
+    .kmeans-stats-grid,
+    .kmeans-cluster-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .kmeans-result-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .kmeans-download-card {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .kmeans-download-button {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+}

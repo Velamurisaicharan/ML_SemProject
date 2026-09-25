@@ -1,324 +1,37 @@
 {% extends "base.html" %}
 
+{% block title %}
+EDA - CropYield AI
+{% endblock %}
+
 {% block content %}
 
-<style>
-
-/* =========================================================
-   TASK 5 - CROP DISTRIBUTION
-========================================================= */
-
-.task5-section {
-    width: 100%;
-}
-
-.task5-section .chart-card {
-    width: 100%;
-    height: 500px;
-
-    padding: 20px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #ffffff;
-
-    border-radius: 12px;
-
-    border: 1px solid #dce4ee;
-
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-
-    overflow: hidden;
-}
-
-
-/* Crop distribution image */
-
-.task5-section .chart-card img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    max-width: 1100px;
-    max-height: 450px;
-
-    object-fit: contain;
-
-    object-position: center;
-}
-
-
-/* =========================================================
-   TASK 6 - NUMERICAL DISTRIBUTIONS
-========================================================= */
-
-.task6-section {
-    width: 100%;
-}
-
-
-/* 2-column layout */
-
-.task6-section .chart-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px;
-
-    width: 100%;
-}
-
-
-/* Individual chart card */
-
-.task6-section .chart-card {
-    width: 100%;
-
-    height: 390px;
-
-    padding: 15px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #ffffff;
-
-    border: 1px solid #dce4ee;
-
-    border-radius: 12px;
-
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-
-    overflow: hidden;
-}
-
-
-/* Distribution graph */
-
-.task6-section .chart-card img {
-    display: block;
-
-    width: 100%;
-
-    height: 100%;
-
-    max-width: 100%;
-    max-height: 350px;
-
-    object-fit: contain;
-
-    object-position: center;
-}
-
-
-/* =========================================================
-   TASK 7 - OUTLIER / BOXPLOT ANALYSIS
-========================================================= */
-
-.task7-section {
-    width: 100%;
-}
-
-
-/* 2-column boxplot layout */
-
-.task7-section .chart-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px;
-
-    width: 100%;
-}
-
-
-/* Boxplot card */
-
-.task7-section .chart-card {
-    width: 100%;
-
-    height: 320px;
-
-    padding: 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #ffffff;
-
-    border: 1px solid #dce4ee;
-
-    border-radius: 12px;
-
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
-
-    overflow: hidden;
-}
-
-
-/* Boxplot image */
-
-.task7-section .chart-card img {
-    display: block;
-
-    width: 100%;
-
-    height: 100%;
-
-    max-width: 100%;
-    max-height: 280px;
-
-    object-fit: contain;
-
-    object-position: center;
-}
-
-
-/* =========================================================
-   HOVER EFFECT
-========================================================= */
-
-.task5-section .chart-card,
-.task6-section .chart-card,
-.task7-section .chart-card {
-    transition: transform 0.25s ease,
-                box-shadow 0.25s ease;
-}
-
-
-.task5-section .chart-card:hover,
-.task6-section .chart-card:hover,
-.task7-section .chart-card:hover {
-
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 10px 25px rgba(31, 58, 95, 0.14);
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 900px) {
-
-    /* Task 5 */
-
-    .task5-section .chart-card {
-        height: 430px;
-    }
-
-
-    /* Task 6 */
-
-    .task6-section .chart-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    .task6-section .chart-card {
-        height: 400px;
-    }
-
-
-    /* Task 7 */
-
-    .task7-section .chart-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    .task7-section .chart-card {
-        height: 330px;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    /* Task 5 */
-
-    .task5-section .chart-card {
-        height: 320px;
-
-        padding: 10px;
-    }
-
-
-    .task5-section .chart-card img {
-        max-height: 290px;
-    }
-
-
-    /* Task 6 */
-
-    .task6-section .chart-grid {
-        grid-template-columns: 1fr;
-
-        gap: 15px;
-    }
-
-
-    .task6-section .chart-card {
-        height: 300px;
-
-        padding: 10px;
-    }
-
-
-    .task6-section .chart-card img {
-        max-height: 280px;
-    }
-
-
-    /* Task 7 */
-
-    .task7-section .chart-grid {
-        grid-template-columns: 1fr;
-
-        gap: 15px;
-    }
-
-
-    .task7-section .chart-card {
-        height: 280px;
-
-        padding: 10px;
-    }
-
-
-    .task7-section .chart-card img {
-        max-height: 260px;
-    }
-
-}
-
-</style>
+<!-- =========================================
+     EDA PAGE HEADER
+========================================= -->
 
 <div class="page-header">
 
-    <h1>📊 Complete Exploratory Data Analysis</h1>
+    <div>
 
-    <p>
-        Crop Production Dataset Analysis
-    </p>
+        <div class="breadcrumb">
+            Dashboard / EDA
+        </div>
+
+        <h1>
+            📊 Exploratory Data Analysis
+        </h1>
+
+        <p>
+            Explore patterns, distributions and relationships
+            in the Crop Yield dataset.
+        </p>
+
+    </div>
+
+    <div class="header-badge">
+        📊 EDA Analysis
+    </div>
 
 </div>
 
@@ -332,13 +45,11 @@
 {% endif %}
 
 
-
 {% if results %}
 
-
-<!-- =====================================================
+<!-- =========================================
      1. DATA OVERVIEW
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -383,10 +94,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      2. DATA TYPES
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -404,7 +114,6 @@
                 </tr>
 
             </thead>
-
 
             <tbody>
 
@@ -433,10 +142,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      3. MISSING VALUES
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -449,17 +157,12 @@
             <thead>
 
                 <tr>
-
                     <th>Column</th>
-
                     <th>Missing Count</th>
-
                     <th>Missing %</th>
-
                 </tr>
 
             </thead>
-
 
             <tbody>
 
@@ -476,7 +179,9 @@
                     </td>
 
                     <td>
-                        {{ "%.2f"|format(results.missing_percent[col]) }}%
+                        {{ "%.2f"|format(
+                            results.missing_percent[col]
+                        ) }}%
                     </td>
 
                 </tr>
@@ -492,7 +197,7 @@
 
     {% if 'missing_heatmap.png' in results.charts %}
 
-    <div class="chart-card">
+    <div class="chart-card large-chart">
 
         <img
             src="{{ url_for(
@@ -509,10 +214,9 @@
 </section>
 
 
-
-<!-- =====================================================
-     4. DUPLICATE ROWS
-===================================================== -->
+<!-- =========================================
+     4. DUPLICATES
+========================================= -->
 
 <section class="eda-section">
 
@@ -523,10 +227,13 @@
         <h3>Duplicate Records</h3>
 
         <p>
+
             Total duplicate rows:
+
             <strong>
                 {{ results.duplicate_count }}
             </strong>
+
         </p>
 
     </div>
@@ -534,10 +241,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      5. CROP DISTRIBUTION
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -545,7 +251,7 @@
 
     {% if 'crop_distribution.png' in results.charts %}
 
-    <div class="chart-card">
+    <div class="chart-card large-chart">
 
         <img
             src="{{ url_for(
@@ -562,10 +268,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      6. NUMERICAL DISTRIBUTIONS
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -599,10 +304,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      7. OUTLIER DETECTION
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -635,10 +339,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      8. CORRELATION
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -663,10 +366,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      9. RELATIONSHIP ANALYSIS
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -703,10 +405,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      10. CATEGORICAL ANALYSIS
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -743,10 +444,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      11. SEASON ANALYSIS
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -754,7 +454,7 @@
 
     {% if 'season_vs_yield.png' in results.charts %}
 
-    <div class="chart-card">
+    <div class="chart-card large-chart">
 
         <img
             src="{{ url_for(
@@ -771,10 +471,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      12. STATE ANALYSIS
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -820,10 +519,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      13. YEAR-WISE TREND
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -848,10 +546,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      14. YIELD ANALYSIS
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -897,10 +594,9 @@
 </section>
 
 
-
-<!-- =====================================================
+<!-- =========================================
      15. PAIRPLOT
-===================================================== -->
+========================================= -->
 
 <section class="eda-section">
 
@@ -929,7 +625,9 @@
 
 <div class="info-card">
 
-    <h3>EDA Results Not Available</h3>
+    <h3>
+        EDA Results Not Available
+    </h3>
 
     <p>
         Run the EDA analysis to generate the charts.

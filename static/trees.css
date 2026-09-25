@@ -1,294 +1,83 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* =========================================================
+   CROP YIELD AI
+   DECISION TREE REGRESSION
+   GREEN DASHBOARD THEME
+   ========================================================= */
 
 
-body {
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
 
-    font-family:
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    background: #f5f7fb;
-
-    color: #172033;
-
-}
-
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-.sidebar {
-
-    position: fixed;
-
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 230px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #10182b,
-            #17213a
-        );
-
-    padding: 24px 15px;
-
-    color: white;
-
-}
-
-
-.logo {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    padding:
-        0 10px 32px;
-
-}
-
-
-.logo-icon {
-
-    width: 36px;
-    height: 36px;
-
-    border-radius: 9px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #6654ef,
-            #7c5cff
-        );
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-weight: 800;
-
-}
-
-
-.logo strong {
-
-    display: block;
-
-    font-size: 16px;
-
-}
-
-
-.logo small {
-
-    display: block;
-
-    color: #8f9ab0;
-
-    font-size: 9px;
-
-    margin-top: 3px;
-
-}
-
-
-nav {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 7px;
-
-}
-
-
-nav a {
-
-    text-decoration: none;
-
-    color: #aeb7ca;
-
-    padding: 12px;
-
-    border-radius: 9px;
-
-    font-size: 11px;
-
-    transition: .2s;
-
-}
-
-
-nav a:hover {
-
-    background: #242e49;
-
-    color: white;
-
-}
-
-
-nav a.active {
-
-    background:
-        linear-gradient(
-            90deg,
-            #5a4de8,
-            #6757f4
-        );
-
-    color: white;
-
-    box-shadow:
-        0 8px 20px
-        rgba(92,79,230,.25);
-
-}
-
-
-.status {
-
-    position: absolute;
-
-    bottom: 18px;
-
-    left: 15px;
-    right: 15px;
-
-    display: flex;
-
-    gap: 9px;
-
-    padding: 13px;
-
-    background: #202a43;
-
-    border-radius: 9px;
-
-}
-
-
-.status span {
-
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #2ecc71;
-
-    margin-top: 4px;
-
-}
-
-
-.status strong {
-
-    display: block;
-
-    font-size: 9px;
-
-}
-
-
-.status small {
-
-    color: #8995ab;
-
-    font-size: 8px;
-
-}
-
-
-/* =====================================================
-   MAIN
-===================================================== */
-
-.main {
-
-    margin-left: 230px;
-
-    padding: 32px 40px;
-
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-.header {
+.top-section {
 
     display: flex;
 
     justify-content: space-between;
 
-    align-items: center;
+    align-items: flex-start;
 
-    margin-bottom: 25px;
+    gap: 25px;
+
+    margin-bottom: 24px;
+
+}
+
+
+.top-section h1 {
+
+    margin: 0;
+
+    color: #15231c;
+
+    font-size: 29px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.7px;
+
+}
+
+
+.top-section p {
+
+    margin: 7px 0 0;
+
+    color: #819088;
+
+    font-size: 12px;
 
 }
 
 
 .breadcrumb {
 
-    color: #8a94a7;
-
     font-size: 10px;
 
-    margin-bottom: 7px;
+    color: #8b9b94;
+
+    margin-bottom: 8px;
 
 }
 
 
-.header h1 {
+/* =========================================================
+   RUN BUTTON
+   ========================================================= */
 
-    font-size: 28px;
-
-}
-
-
-.header p {
-
-    color: #7d889b;
-
-    font-size: 12px;
-
-    margin-top: 5px;
-
-}
-
-
-.run-button {
+.tree-run-button {
 
     border: none;
 
-    padding: 13px 18px;
+    padding: 11px 18px;
 
     border-radius: 9px;
 
     background:
         linear-gradient(
-            135deg,
-            #5b4be8,
-            #7258ff
+            90deg,
+            #159b59,
+            #1db867
         );
 
     color: white;
@@ -299,26 +88,43 @@ nav a.active {
 
     cursor: pointer;
 
+    white-space: nowrap;
+
     box-shadow:
-        0 8px 20px
-        rgba(92,75,230,.25);
+        0 7px 16px
+        rgba(21,155,89,0.20);
+
+    transition: 0.2s ease;
 
 }
 
 
-/* =====================================================
+.tree-run-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 20px
+        rgba(21,155,89,0.28);
+
+}
+
+
+/* =========================================================
    ERROR
-===================================================== */
+   ========================================================= */
 
-.error {
+.tree-error-box {
 
-    background: #fff1f2;
+    background: #fff1f1;
 
-    border: 1px solid #fecdd3;
+    border: 1px solid #fecaca;
 
-    color: #be123c;
+    border-left: 4px solid #dc2626;
 
-    padding: 17px;
+    color: #991b1b;
+
+    padding: 15px 18px;
 
     border-radius: 10px;
 
@@ -327,7 +133,14 @@ nav a.active {
 }
 
 
-.error p {
+.tree-error-box strong {
+
+    font-size: 12px;
+
+}
+
+
+.tree-error-box p {
 
     margin-top: 5px;
 
@@ -336,11 +149,11 @@ nav a.active {
 }
 
 
-/* =====================================================
+/* =========================================================
    SUMMARY
-===================================================== */
+   ========================================================= */
 
-.summary {
+.tree-summary-grid {
 
     display: grid;
 
@@ -349,18 +162,20 @@ nav a.active {
 
     gap: 16px;
 
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 
 }
 
 
-.card {
+.tree-stat-card {
 
     background: white;
 
-    padding: 19px;
+    border: 1px solid #e4ebe7;
 
-    border-radius: 13px;
+    border-radius: 12px;
+
+    padding: 18px;
 
     display: flex;
 
@@ -368,16 +183,37 @@ nav a.active {
 
     gap: 13px;
 
-    border:
-        1px solid #edf0f4;
+    box-shadow:
+        0 4px 14px
+        rgba(26,58,42,0.045);
+
+    transition: 0.2s ease;
 
 }
 
 
-.icon {
+.tree-stat-card:hover {
 
-    width: 42px;
-    height: 42px;
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(26,58,42,0.08);
+
+}
+
+
+/* =========================================================
+   SUMMARY ICONS
+   ========================================================= */
+
+.tree-stat-icon {
+
+    width: 44px;
+
+    height: 44px;
+
+    min-width: 44px;
 
     border-radius: 10px;
 
@@ -387,89 +223,150 @@ nav a.active {
 
     justify-content: center;
 
+    font-size: 18px;
+
 }
 
 
-.blue {
-    background: #eaf2ff;
-}
+.tree-stat-icon.green {
 
-.purple {
-    background: #f0eaff;
-}
+    background: #e8f8ef;
 
-.green {
-    background: #e8f8ee;
-}
-
-.orange {
-    background: #fff2df;
 }
 
 
-.card small {
+.tree-stat-icon.purple {
+
+    background: #f1ebff;
+
+}
+
+
+.tree-stat-icon.blue {
+
+    background: #e9f1ff;
+
+}
+
+
+.tree-stat-icon.orange {
+
+    background: #fff1df;
+
+}
+
+
+/* =========================================================
+   SUMMARY TEXT
+   ========================================================= */
+
+.tree-stat-card span {
 
     display: block;
 
-    color: #8993a3;
+    color: #8b9993;
 
     font-size: 9px;
 
+    margin-bottom: 3px;
+
 }
 
 
-.card strong {
+.tree-stat-card strong {
 
     display: block;
 
-    font-size: 16px;
+    color: #17241e;
 
-    margin-top: 4px;
+    font-size: 20px;
+
+    line-height: 1.2;
 
 }
 
 
-/* =====================================================
-   MODULES
-===================================================== */
+.tree-stat-card small {
 
-.modules {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #9aa7a1;
+
+    font-size: 8px;
+
+}
+
+
+/* =========================================================
+   MODULES
+   ========================================================= */
+
+.tree-modules {
 
     background: white;
 
-    padding: 20px;
+    padding: 22px;
 
     border-radius: 13px;
 
-    margin-bottom: 25px;
+    border: 1px solid #e3ebe6;
 
-    border:
-        1px solid #edf0f4;
+    margin-bottom: 22px;
 
-}
-
-
-.modules h2 {
-
-    font-size: 15px;
+    box-shadow:
+        0 4px 15px
+        rgba(26,58,42,0.04);
 
 }
 
 
-.modules p {
+.tree-module-header {
 
-    color: #8a94a4;
+    margin-bottom: 16px;
+
+}
+
+
+.tree-section-label {
+
+    display: inline-block;
+
+    color: #169755;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+
+}
+
+
+.tree-modules h2 {
+
+    margin: 5px 0 5px;
+
+    color: #1c2b23;
+
+    font-size: 18px;
+
+}
+
+
+.tree-modules p {
+
+    margin: 0;
+
+    color: #8c9a94;
 
     font-size: 10px;
 
-    margin-top: 4px;
-
-    margin-bottom: 15px;
-
 }
 
 
-.module-buttons {
+.tree-module-buttons {
 
     display: flex;
 
@@ -480,78 +377,100 @@ nav a.active {
 }
 
 
-.module {
+.tree-module {
 
-    border:
-        1px solid #e2e7ec;
+    border: 1px solid #dce9e3;
 
-    background: #f8fafb;
+    background: white;
 
-    padding: 10px 14px;
+    color: #53655c;
+
+    padding: 9px 13px;
 
     border-radius: 8px;
 
     cursor: pointer;
 
-    color: #596577;
-
     font-size: 10px;
 
     font-weight: 600;
 
+    transition: 0.2s ease;
+
 }
 
 
-.module.active {
+.tree-module:hover {
+
+    border-color: #1aaa63;
+
+    color: #16834d;
+
+    background: #f6fcf8;
+
+}
+
+
+.tree-module.active {
 
     background:
         linear-gradient(
             135deg,
-            #5b4be8,
-            #7258ff
+            #159b59,
+            #1db867
         );
 
     color: white;
 
-    border-color: #5b4be8;
+    border-color: #159b59;
+
+    box-shadow:
+        0 5px 12px
+        rgba(21,155,89,0.18);
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SECTIONS
-===================================================== */
+   ========================================================= */
 
-.section {
+.tree-section {
 
     display: none;
 
 }
 
 
-.active-section {
+.tree-section.active {
 
     display: block;
 
 }
 
 
-.section-title {
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.tree-section-title {
 
     display: flex;
 
-    align-items: center;
-
     justify-content: space-between;
 
-    margin-bottom: 19px;
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
 
 }
 
 
-.section-title span {
+.tree-section-title > div:first-child > span {
 
-    color: #6150e9;
+    color: #169755;
 
     font-size: 9px;
 
@@ -562,29 +481,37 @@ nav a.active {
 }
 
 
-.section-title h2 {
+.tree-section-title h2 {
+
+    margin: 5px 0;
+
+    color: #1c2b23;
 
     font-size: 20px;
 
-    margin-top: 5px;
-
 }
 
 
-.section-title p {
+.tree-section-title p {
 
-    color: #8590a0;
+    margin: 0;
+
+    color: #87958e;
 
     font-size: 11px;
 
-    margin-top: 4px;
+    line-height: 1.6;
 
 }
 
 
-.badge {
+/* =========================================================
+   BADGE
+   ========================================================= */
 
-    background: #e9f8ef;
+.tree-badge {
+
+    background: #e8f8ef;
 
     color: #16834d;
 
@@ -596,95 +523,107 @@ nav a.active {
 
     font-weight: 700;
 
+    white-space: nowrap;
+
 }
 
 
-/* =====================================================
-   INFO CARDS
-===================================================== */
+/* =========================================================
+   INFO GRID
+   ========================================================= */
 
-.info-grid {
+.tree-info-grid {
 
     display: grid;
 
     grid-template-columns:
         repeat(4, 1fr);
 
-    gap: 15px;
+    gap: 14px;
 
     margin-bottom: 18px;
 
 }
 
 
-.info-card {
+.tree-info-card {
 
     background: white;
 
-    padding: 20px;
+    padding: 19px;
 
-    border-radius: 13px;
+    border-radius: 12px;
 
-    border:
-        1px solid #edf0f4;
+    border: 1px solid #e4ebe7;
+
+    box-shadow:
+        0 3px 12px
+        rgba(26,58,42,0.035);
 
 }
 
 
-.info-card span {
+.tree-info-card span {
 
-    color: #8b95a5;
+    color: #899992;
 
     font-size: 9px;
 
 }
 
 
-.info-card strong {
+.tree-info-card strong {
 
     display: block;
 
-    font-size: 14px;
+    color: #26382f;
+
+    font-size: 13px;
 
     margin-top: 7px;
 
 }
 
 
-.info-card p {
+.tree-info-card p {
 
-    color: #8b95a5;
+    color: #899992;
 
     font-size: 9px;
 
     margin-top: 7px;
 
+    line-height: 1.5;
+
 }
 
 
-/* =====================================================
-   CONCEPT
-===================================================== */
+/* =========================================================
+   CONCEPT CARD
+   ========================================================= */
 
-.concept-card {
+.tree-concept-card {
 
     background: white;
 
-    padding: 22px;
+    padding: 21px;
 
     border-radius: 13px;
 
-    border:
-        1px solid #edf0f4;
+    border: 1px solid #e3ebe6;
 
     margin-bottom: 18px;
+
+    box-shadow:
+        0 3px 12px
+        rgba(26,58,42,0.035);
 
 }
 
 
-.concept-card > span {
+.tree-concept-card > span {
 
-    color: #6150e9;
+    color: #169755;
 
     font-size: 9px;
 
@@ -695,7 +634,11 @@ nav a.active {
 }
 
 
-.flow {
+/* =========================================================
+   TREE FLOW
+   ========================================================= */
+
+.tree-flow {
 
     display: flex;
 
@@ -703,45 +646,46 @@ nav a.active {
 
     justify-content: center;
 
-    gap: 18px;
+    gap: 15px;
 
-    margin-top: 20px;
+    margin-top: 18px;
 
 }
 
 
-.flow div {
+.tree-flow-item {
 
-    background: #f7f8fc;
+    background: #f4faf6;
 
-    border:
-        1px solid #e7e9f0;
+    border: 1px solid #dceee3;
 
     border-radius: 10px;
 
-    padding: 15px;
+    padding: 14px;
 
     text-align: center;
 
-    min-width: 150px;
+    min-width: 145px;
 
 }
 
 
-.flow b {
+.tree-flow-item b {
 
     display: block;
+
+    color: #294b3a;
 
     font-size: 11px;
 
 }
 
 
-.flow small {
+.tree-flow-item small {
 
     display: block;
 
-    color: #8993a3;
+    color: #899992;
 
     font-size: 9px;
 
@@ -750,27 +694,26 @@ nav a.active {
 }
 
 
-.flow i {
+.tree-flow i {
 
-    color: #6454e9;
+    color: #169755;
 
     font-style: normal;
 
-    font-size: 20px;
+    font-size: 19px;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    PANELS
-===================================================== */
+   ========================================================= */
 
-.panel {
+.tree-panel {
 
     background: white;
 
-    border:
-        1px solid #edf0f4;
+    border: 1px solid #e3ebe6;
 
     border-radius: 13px;
 
@@ -778,10 +721,16 @@ nav a.active {
 
     margin-bottom: 18px;
 
+    box-shadow:
+        0 3px 12px
+        rgba(26,58,42,0.035);
+
 }
 
 
-.panel h3 {
+.tree-panel h3 {
+
+    color: #25372e;
 
     font-size: 13px;
 
@@ -790,7 +739,18 @@ nav a.active {
 }
 
 
-.chart img {
+/* =========================================================
+   CHARTS
+   ========================================================= */
+
+.tree-chart {
+
+    overflow: hidden;
+
+}
+
+
+.tree-chart img {
 
     width: 100%;
 
@@ -799,62 +759,6 @@ nav a.active {
     max-height: 650px;
 
     object-fit: contain;
-
-}
-
-
-/* =====================================================
-   TREE
-===================================================== */
-
-.tree-stats {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 15px;
-
-    margin-bottom: 18px;
-
-}
-
-
-.tree-stats div {
-
-    background: white;
-
-    padding: 18px;
-
-    border-radius: 12px;
-
-    border:
-        1px solid #edf0f4;
-
-}
-
-
-.tree-stats small {
-
-    display: block;
-
-    color: #8993a3;
-
-    font-size: 9px;
-
-}
-
-
-.tree-stats strong {
-
-    display: block;
-
-    color: #5b4be8;
-
-    font-size: 20px;
-
-    margin-top: 5px;
 
 }
 
@@ -872,14 +776,84 @@ nav a.active {
 
     min-width: 900px;
 
+    display: block;
+
 }
 
 
-/* =====================================================
-   TERMINOLOGY
-===================================================== */
+.tree-empty {
 
-.terminology {
+    padding: 50px;
+
+    text-align: center;
+
+    color: #899992;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   TREE STRUCTURE STATS
+   ========================================================= */
+
+.tree-structure-stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.tree-structure-stats > div {
+
+    background: white;
+
+    padding: 17px;
+
+    border-radius: 11px;
+
+    border: 1px solid #e4ebe7;
+
+}
+
+
+.tree-structure-stats small {
+
+    display: block;
+
+    color: #899992;
+
+    font-size: 9px;
+
+}
+
+
+.tree-structure-stats strong {
+
+    display: block;
+
+    color: #16834d;
+
+    font-size: 20px;
+
+    margin-top: 5px;
+
+}
+
+
+/* =========================================================
+   TERMINOLOGY
+   ========================================================= */
+
+.tree-terminology {
 
     display: grid;
 
@@ -893,90 +867,160 @@ nav a.active {
 }
 
 
-.terminology div {
+.tree-terminology > div {
 
     padding: 15px;
 
-    background: #f8f9fc;
+    background: #f6faf8;
+
+    border: 1px solid #e3eee8;
 
     border-radius: 9px;
 
 }
 
 
-.terminology strong {
+.tree-terminology strong {
+
+    color: #294b3a;
 
     font-size: 11px;
 
 }
 
 
-.terminology p {
+.tree-terminology p {
 
-    color: #8993a3;
+    color: #899992;
 
     font-size: 9px;
 
     margin-top: 6px;
 
+    line-height: 1.5;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    METRICS
-===================================================== */
+   ========================================================= */
 
-.metrics-grid {
+.tree-metrics-grid {
 
     display: grid;
 
     grid-template-columns:
         repeat(4, 1fr);
 
-    gap: 15px;
+    gap: 14px;
 
     margin-bottom: 18px;
 
 }
 
 
-.metric-card {
+.tree-metric-card {
 
     background: white;
 
-    padding: 21px;
+    padding: 19px;
 
-    border-radius: 13px;
+    border-radius: 12px;
 
-    border:
-        1px solid #edf0f4;
+    border: 1px solid #e4ebe7;
+
+    box-shadow:
+        0 3px 12px
+        rgba(26,58,42,0.035);
 
 }
 
 
-.metric-card small {
+.tree-metric-icon {
 
-    color: #8993a3;
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 11px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+}
+
+
+.tree-metric-icon.green {
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+}
+
+
+.tree-metric-icon.blue {
+
+    background: #e9f1ff;
+
+    color: #3679d8;
+
+}
+
+
+.tree-metric-icon.purple {
+
+    background: #f1ebff;
+
+    color: #6954f4;
+
+}
+
+
+.tree-metric-icon.orange {
+
+    background: #fff1df;
+
+    color: #d97706;
+
+}
+
+
+.tree-metric-card small {
+
+    color: #899992;
 
     font-size: 9px;
 
 }
 
 
-.metric-card strong {
+.tree-metric-card strong {
 
     display: block;
 
-    font-size: 25px;
+    color: #16834d;
 
-    margin-top: 7px;
+    font-size: 23px;
+
+    margin-top: 6px;
 
 }
 
 
-.metric-card p {
+.tree-metric-card p {
 
-    color: #8993a3;
+    color: #899992;
 
     font-size: 9px;
 
@@ -985,42 +1029,47 @@ nav a.active {
 }
 
 
-.metric-explanation {
+/* =========================================================
+   METRIC EXPLANATION
+   ========================================================= */
+
+.tree-metric-explanation {
 
     display: grid;
 
     grid-template-columns:
         repeat(3, 1fr);
 
-    gap: 15px;
+    gap: 14px;
 
 }
 
 
-.metric-explanation div {
+.tree-metric-explanation > div {
 
     background: white;
 
-    padding: 20px;
+    padding: 19px;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
-    border:
-        1px solid #edf0f4;
+    border: 1px solid #e4ebe7;
 
 }
 
 
-.metric-explanation strong {
+.tree-metric-explanation strong {
+
+    color: #294b3a;
 
     font-size: 13px;
 
 }
 
 
-.metric-explanation p {
+.tree-metric-explanation p {
 
-    color: #8993a3;
+    color: #899992;
 
     font-size: 10px;
 
@@ -1031,59 +1080,171 @@ nav a.active {
 }
 
 
-/* =====================================================
+/* =========================================================
    TABLE
-===================================================== */
+   ========================================================= */
 
-table {
+.tree-table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid #e3ebe6;
+
+    border-radius: 9px;
+
+}
+
+
+.tree-table {
 
     width: 100%;
 
     border-collapse: collapse;
 
+    background: white;
+
 }
 
 
-th {
+.tree-table th {
 
     text-align: left;
 
-    background: #f7f9fb;
+    background: #f1f8f4;
 
-    color: #657083;
+    color: #4e6258;
 
     padding: 12px;
 
     font-size: 9px;
 
+    font-weight: 700;
+
+    border-bottom: 1px solid #dfeae4;
+
 }
 
 
-td {
+.tree-table td {
 
-    padding: 11px;
+    padding: 11px 12px;
 
-    border-bottom:
-        1px solid #f0f2f4;
+    color: #596961;
+
+    border-bottom: 1px solid #edf2ef;
 
     font-size: 10px;
 
 }
 
 
-/* =====================================================
-   DOWNLOAD
-===================================================== */
+.tree-table tbody tr:last-child td {
 
-.download {
+    border-bottom: none;
+
+}
+
+
+.tree-table tbody tr:hover {
+
+    background: #f8fcfa;
+
+}
+
+
+.tree-feature-name {
+
+    color: #294b3a !important;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   RANK
+   ========================================================= */
+
+.rank-badge {
+
+    display: inline-flex;
+
+    width: 23px;
+
+    height: 23px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e8f8ef;
+
+    color: #16834d;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   IMPORTANCE
+   ========================================================= */
+
+.importance-value {
+
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    background: #eef8f2;
+
+    color: #16834d;
+
+    border-radius: 6px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   PREDICTIONS
+   ========================================================= */
+
+.predicted-value {
+
+    color: #16834d !important;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+.tree-download {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
 
     text-decoration: none;
 
-    background: #f0eeff;
+    background: #e8f8ef;
 
-    color: #5b4be8;
+    color: #16834d;
 
-    padding: 10px 14px;
+    padding: 9px 13px;
 
     border-radius: 8px;
 
@@ -1091,27 +1252,54 @@ td {
 
     font-weight: 700;
 
+    white-space: nowrap;
+
+    border: 1px solid #d2eddd;
+
+    transition: 0.2s ease;
+
 }
 
 
-/* =====================================================
+.tree-download:hover {
+
+    background: #d9f3e4;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
    FORMULA
-===================================================== */
+   ========================================================= */
 
-.formula {
-
-    font-size: 19px;
-
-    font-weight: 700;
+.tree-formula {
 
     margin-top: 14px;
 
+    padding: 18px;
+
+    border-radius: 9px;
+
+    background: #eef9f3;
+
+    border: 1px solid #d8eee1;
+
+    text-align: center;
+
+    color: #16834d;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
 }
 
 
-.concept-card p {
+.tree-concept-card > p {
 
-    color: #8993a3;
+    color: #899992;
 
     font-size: 10px;
 
@@ -1120,11 +1308,11 @@ td {
 }
 
 
-/* =====================================================
+/* =========================================================
    LOADING
-===================================================== */
+   ========================================================= */
 
-.loading {
+.tree-loading {
 
     position: fixed;
 
@@ -1137,21 +1325,21 @@ td {
     justify-content: center;
 
     background:
-        rgba(10,15,30,.65);
+        rgba(4,35,25,0.60);
 
-    z-index: 100;
+    z-index: 9999;
 
 }
 
 
-.loading.show {
+.tree-loading.show {
 
     display: flex;
 
 }
 
 
-.loading-box {
+.tree-loading-box {
 
     width: 310px;
 
@@ -1163,98 +1351,177 @@ td {
 
     text-align: center;
 
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,0.20);
+
 }
 
 
-.spinner {
+.tree-loading-box h3 {
+
+    color: #26382f;
+
+    font-size: 14px;
+
+    margin-top: 12px;
+
+}
+
+
+.tree-loading-box p {
+
+    color: #899992;
+
+    font-size: 10px;
+
+    margin-top: 5px;
+
+}
+
+
+.tree-spinner {
 
     width: 40px;
+
     height: 40px;
 
     border-radius: 50%;
 
-    border:
-        4px solid #e5e7eb;
+    border: 4px solid #dceee4;
 
-    border-top-color: #6353ed;
+    border-top-color: #16a861;
 
     animation:
-        spin .8s linear infinite;
+        tree-spin .8s linear infinite;
 
-    margin:
-        0 auto 15px;
+    margin: 0 auto;
 
 }
 
 
-@keyframes spin {
+@keyframes tree-spin {
 
     to {
+
         transform: rotate(360deg);
+
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    RESPONSIVE
-===================================================== */
+   ========================================================= */
 
-@media(max-width:1000px) {
+@media (max-width: 1100px) {
 
-    .summary,
-    .info-grid,
-    .metrics-grid,
-    .tree-stats {
+    .tree-summary-grid,
+    .tree-info-grid,
+    .tree-metrics-grid,
+    .tree-structure-stats {
 
         grid-template-columns:
             repeat(2, 1fr);
 
     }
 
+
+    .tree-feature-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
 }
 
 
-@media(max-width:700px) {
+@media (max-width: 800px) {
 
-    .sidebar {
+    .top-section {
 
-        width: 70px;
-
-    }
-
-    .main {
-
-        margin-left: 70px;
-
-        padding: 20px;
+        flex-direction: column;
 
     }
 
-    .summary,
-    .info-grid,
-    .metrics-grid,
-    .tree-stats,
-    .terminology,
-    .metric-explanation {
+
+    .tree-section-title {
+
+        flex-direction: column;
+
+    }
+
+
+    .tree-summary-grid,
+    .tree-info-grid,
+    .tree-metrics-grid,
+    .tree-structure-stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .tree-terminology,
+    .tree-metric-explanation {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .tree-flow {
+
+        flex-direction: column;
+
+    }
+
+
+    .tree-flow i {
+
+        transform: rotate(90deg);
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .tree-summary-grid,
+    .tree-info-grid,
+    .tree-metrics-grid,
+    .tree-structure-stats,
+    .tree-terminology,
+    .tree-metric-explanation {
 
         grid-template-columns: 1fr;
 
     }
 
-    .header {
 
-        flex-direction: column;
+    .tree-modules {
 
-        align-items: flex-start;
-
-        gap: 15px;
+        padding: 18px;
 
     }
 
-    .flow {
 
-        flex-direction: column;
+    .tree-panel,
+    .tree-concept-card {
+
+        padding: 16px;
+
+    }
+
+
+    .tree-section-title h2 {
+
+        font-size: 18px;
 
     }
 

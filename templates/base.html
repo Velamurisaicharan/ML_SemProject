@@ -2,63 +2,240 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crop Yield Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CropYield AI{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    {% block extra_css %}{% endblock %}
 </head>
+
 <body>
 
-<header class="topbar">
-    <h1>🌾 Crop Yield Analysis Dashboard</h1>
-</header>
+<div class="app-container">
 
-<div class="layout">
+    <!-- ================================================= -->
+    <!-- SIDEBAR -->
+    <!-- ================================================= -->
 
-    <!-- Sidebar -->
-    <nav class="sidebar">
-        <ul>
-            <li>
-                <a href="{{ url_for('data_loading') }}"
-                   class="menu-item {% if active == 'data-loading' %}active{% endif %}">
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="brand">
+
+            <div class="brand-logo">
+                🌾
+            </div>
+
+            <div class="brand-text">
+
+                <h2>CropYield AI</h2>
+
+                <span>
+                    Analytics Studio
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+        <nav class="sidebar-nav">
+
+            <!-- Dashboard -->
+
+            <a href="{{ url_for('index') }}"
+               class="menu-item
+               {% if active == 'dashboard' or active == 'none' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Data Loading -->
+
+            <a href="{{ url_for('data_loading') }}"
+               class="menu-item
+               {% if active == 'data-loading' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    📁
+                </span>
+
+                <span>
                     Data Loading
-                </a>
-            </li>
+                </span>
 
-            <li>
-                <a href="{{ url_for('eda_page') }}"
-                   class="menu-item {% if active == 'eda' %}active{% endif %}">
+            </a>
+
+
+            <!-- EDA -->
+
+            <a href="{{ url_for('eda_page') }}"
+               class="menu-item
+               {% if active == 'eda' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    📊
+                </span>
+
+                <span>
                     EDA
-                </a>
-            </li>
+                </span>
+
+            </a>
+
+
+            <!-- Preprocessing -->
+
+            <a href="{{ url_for('preprocessing_page') }}"
+               class="menu-item
+               {% if active == 'preprocessing' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    ⚙️
+                </span>
+
+                <span>
+                    Preprocessing
+                </span>
+
+            </a>
+
+
+            <!-- Linear Regression -->
+
             <a href="{{ url_for('linear_regression_page') }}"
-   class="{% if active == 'linear-regression' %}active{% endif %}">
+               class="menu-item
+               {% if active == 'linear-regression' %}
+               active
+               {% endif %}">
 
-    📈
+                <span class="menu-icon">
+                    📈
+                </span>
 
-    <span>Linear Regression</span>
+                <span>
+                    Linear Regression
+                </span>
 
-</a>
+            </a>
 
-            <li>
-    <a
-        href="{{ url_for('preprocessing_page') }}"
-        class="menu-item
-        {% if active == 'preprocessing' %}
-        active
-        {% endif %}"
-    >
-        Preprocessing
-    </a>
-</li>
-            <li class="menu-item disabled">Model</li>
-        </ul>
-    </nav>
 
-    <!-- CONTENT -->
-    <main class="content">
-        {% block content %}{% endblock %}
+            <!-- Logistic Regression -->
+
+            <a href="{{ url_for('logistic_regression_page') }}"
+               class="menu-item
+               {% if active == 'logistic-regression' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    🎯
+                </span>
+
+                <span>
+                    Logistic Regression
+                </span>
+
+            </a>
+
+
+            <!-- Trees -->
+
+            <a href="{{ url_for('trees_page') }}"
+               class="menu-item
+               {% if active == 'trees' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    🌳
+                </span>
+
+                <span>
+                    Trees
+                </span>
+
+            </a>
+
+
+            <!-- K-Means -->
+
+            <a href="{{ url_for('kmeans_page') }}"
+               class="menu-item
+               {% if active == 'kmeans' %}
+               active
+               {% endif %}">
+
+                <span class="menu-icon">
+                    🔵
+                </span>
+
+                <span>
+                    K-Means
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- SIDEBAR STATUS -->
+
+        <div class="sidebar-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+
+                <strong>
+                    Pipeline Ready
+                </strong>
+
+                <small>
+                    Crop dataset connected
+                </small>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================================================= -->
+    <!-- MAIN AREA -->
+    <!-- ================================================= -->
+
+    <main class="main-area">
+
+        {% block content %}
+
+        {% endblock %}
+
     </main>
 
 </div>
 
 </body>
+
 </html>

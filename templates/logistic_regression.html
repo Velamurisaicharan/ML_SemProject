@@ -1,110 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Logistic Regression - Yield Classification
-    </title>
-
-    <link rel="stylesheet"
-          href="{{ url_for(
-              'static',
-              filename='logistic_regression.css'
-          ) }}">
-
-</head>
+{% block title %}
+Crop Yield - Logistic Regression
+{% endblock %}
 
 
-<body>
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='logistic_regression.css') }}">
+
+{% endblock %}
 
 
-<!-- ========================================================
-     NAVBAR
-     ======================================================== -->
+{% block content %}
 
-<nav class="navbar">
+<!-- =========================================================
+     PAGE HEADER
+========================================================= -->
 
-    <div class="logo">
-        Crop Yield ML System
-    </div>
+<div class="top-section">
 
-    <div class="nav-links">
+    <div>
 
-        <a href="/">
-            Dashboard
-        </a>
+        <div class="breadcrumb">
+            Dashboard / Modeling / Logistic Regression
+        </div>
 
-        <a href="/data-loading">
-            Data Loading
-        </a>
+        <h1>
+            Crop Yield Logistic Regression
+        </h1>
 
-        <a href="/eda">
-            EDA
-        </a>
-
-        <a href="/preprocessing">
-            Preprocessing
-        </a>
-
-        <a href="/linear-regression">
-            Linear Regression
-        </a>
-
-        <a href="/logistic-regression"
-           class="active">
-            Logistic Regression
-        </a>
+        <p>
+            Classify agricultural records into Low Yield and High Yield.
+        </p>
 
     </div>
 
-</nav>
+
+    <a href="{{ url_for('logistic_regression_page') }}"
+       class="lr-run-button">
+
+        🎯 Train Logistic Regression
+
+    </a>
+
+</div>
 
 
-<main class="container">
-
-
-<!-- ========================================================
-     HEADER
-     ======================================================== -->
-
-<section class="hero">
-
-    <h1>
-        Logistic Regression
-    </h1>
-
-    <h2>
-        Crop Yield Classification
-    </h2>
-
-    <p>
-
-        Classification of agricultural records
-        into Low Yield and High Yield using
-        Logistic Regression.
-
-    </p>
-
-</section>
-
-
-<!-- ========================================================
+<!-- =========================================================
      ERROR
-     ======================================================== -->
+========================================================= -->
 
 {% if error %}
 
-<div class="error-box">
+<div class="log-error-box">
 
-    <strong>Error:</strong>
+    <strong>
+        Logistic Regression Error
+    </strong>
 
-    {{ error }}
+    <p>
+        {{ error }}
+    </p>
 
 </div>
 
@@ -114,109 +72,240 @@
 {% if results %}
 
 
-<!-- ========================================================
-     TARGET
-     ======================================================== -->
+<!-- =========================================================
+     SUMMARY CARDS
+========================================================= -->
 
-<section class="card">
-
-    <h2>
-        Target Definition
-    </h2>
-
-    <p>
-
-        Logistic Regression is a classification
-        algorithm. Since <strong>Yield</strong> is
-        continuous, it is converted into two classes
-        using the median yield as the threshold.
-
-    </p>
+<section class="log-summary-grid">
 
 
-    <div class="formula">
+    <!-- TARGET -->
 
-        Yield ≤ Median → Low Yield
+    <div class="log-stat-card">
 
-        <br><br>
+        <div class="log-stat-icon green">
+            🎯
+        </div>
 
-        Yield > Median → High Yield
+        <div>
+
+            <span>
+                Target
+            </span>
+
+            <strong>
+                Yield
+            </strong>
+
+            <small>
+                Classification target
+            </small>
+
+        </div>
 
     </div>
 
 
-    <div class="stats">
+    <!-- MEDIAN -->
 
+    <div class="log-stat-card">
 
-        <div class="stat-card">
+        <div class="log-stat-icon purple">
+            📊
+        </div>
+
+        <div>
 
             <span>
                 Median Yield
             </span>
 
             <strong>
-
-                {{ "%.4f"|format(
-                    results.median_yield
-                ) }}
-
+                {{ "%.4f"|format(results.median_yield) }}
             </strong>
+
+            <small>
+                Classification threshold
+            </small>
 
         </div>
 
+    </div>
 
-        <div class="stat-card low">
+
+    <!-- LOW -->
+
+    <div class="log-stat-card">
+
+        <div class="log-stat-icon orange">
+            ↓
+        </div>
+
+        <div>
 
             <span>
                 Low Yield
             </span>
 
             <strong>
-
-                {{ results.low_yield_count }}
-
+                {{ "{:,}".format(results.low_yield_count) }}
             </strong>
+
+            <small>
+                Yield ≤ median
+            </small>
 
         </div>
 
+    </div>
 
-        <div class="stat-card high">
+
+    <!-- HIGH -->
+
+    <div class="log-stat-card">
+
+        <div class="log-stat-icon blue">
+            ↑
+        </div>
+
+        <div>
 
             <span>
                 High Yield
             </span>
 
             <strong>
-
-                {{ results.high_yield_count }}
-
+                {{ "{:,}".format(results.high_yield_count) }}
             </strong>
+
+            <small>
+                Yield > median
+            </small>
 
         </div>
 
     </div>
 
+
 </section>
 
 
-<!-- ========================================================
+<!-- =========================================================
+     CLASSIFICATION PIPELINE
+========================================================= -->
+
+<section class="log-card">
+
+    <div class="log-card-header">
+
+        <div>
+
+            <span class="log-section-label">
+                LOGISTIC REGRESSION PIPELINE
+            </span>
+
+            <h2>
+                Yield Classification
+            </h2>
+
+            <p>
+                Convert continuous yield into two classes and evaluate
+                the classification model.
+            </p>
+
+        </div>
+
+
+        <span class="log-ready-badge">
+            ✓ MODEL READY
+        </span>
+
+    </div>
+
+
+    <!-- FORMULA -->
+
+    <div class="log-formula">
+
+        <div class="formula-row">
+
+            <span class="formula-low">
+                Yield ≤ Median
+            </span>
+
+            <span class="formula-arrow">
+                →
+            </span>
+
+            <span class="formula-low">
+                Low Yield
+            </span>
+
+        </div>
+
+
+        <div class="formula-row">
+
+            <span class="formula-high">
+                Yield > Median
+            </span>
+
+            <span class="formula-arrow">
+                →
+            </span>
+
+            <span class="formula-high">
+                High Yield
+            </span>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
      FEATURES
-     ======================================================== -->
+========================================================= -->
 
-<section class="card">
+<section class="log-card">
 
-    <h2>
-        Features Used
-    </h2>
+    <div class="log-card-header">
+
+        <div>
+
+            <span class="log-section-label">
+                INPUT FEATURES
+            </span>
+
+            <h2>
+                Features Used
+            </h2>
+
+            <p>
+                Features supplied to the Logistic Regression classifier.
+            </p>
+
+        </div>
+
+    </div>
 
 
-    <div class="feature-grid">
+    <div class="log-feature-grid">
 
         {% for feature in results.features %}
 
-        <div class="feature-card">
+        <div class="log-feature-card">
 
-            {{ feature }}
+            <span class="feature-number">
+                {{ loop.index }}
+            </span>
+
+            <span>
+                {{ feature }}
+            </span>
 
         </div>
 
@@ -227,297 +316,351 @@
 </section>
 
 
-<!-- ========================================================
-     PIPELINE
-     ======================================================== -->
+<!-- =========================================================
+     MODEL PERFORMANCE
+========================================================= -->
+
+<section class="log-card">
+
+    <div class="log-card-header">
+
+        <div>
+
+            <span class="log-section-label">
+                MODEL EVALUATION
+            </span>
+
+            <h2>
+                Model Performance
+            </h2>
+
+            <p>
+                Classification performance on the test dataset.
+            </p>
+
+        </div>
+
+    </div>
 
 
-
-<!-- ========================================================
-     MODEL METRICS
-     ======================================================== -->
-
-<section class="card">
-
-    <h2>
-        Model Performance
-    </h2>
+    <div class="log-metrics-grid">
 
 
-    <div class="metrics">
+        <div class="log-metric">
 
-
-        <div class="metric">
+            <div class="metric-icon green">
+                ✓
+            </div>
 
             <span>
                 Accuracy
             </span>
 
             <strong>
-
-                {{ "%.4f"|format(
-                    results.accuracy
-                ) }}
-
+                {{ "%.4f"|format(results.accuracy) }}
             </strong>
 
         </div>
 
 
-        <div class="metric">
+        <div class="log-metric">
+
+            <div class="metric-icon purple">
+                ◆
+            </div>
 
             <span>
                 Precision
             </span>
 
             <strong>
-
-                {{ "%.4f"|format(
-                    results.precision
-                ) }}
-
+                {{ "%.4f"|format(results.precision) }}
             </strong>
 
         </div>
 
 
-        <div class="metric">
+        <div class="log-metric">
+
+            <div class="metric-icon blue">
+                ↗
+            </div>
 
             <span>
                 Recall
             </span>
 
             <strong>
-
-                {{ "%.4f"|format(
-                    results.recall
-                ) }}
-
+                {{ "%.4f"|format(results.recall) }}
             </strong>
 
         </div>
 
 
-        <div class="metric">
+        <div class="log-metric">
+
+            <div class="metric-icon orange">
+                ★
+            </div>
 
             <span>
                 F1 Score
             </span>
 
             <strong>
-
-                {{ "%.4f"|format(
-                    results.f1
-                ) }}
-
+                {{ "%.4f"|format(results.f1) }}
             </strong>
 
         </div>
 
 
-        <div class="metric">
+        <div class="log-metric">
+
+            <div class="metric-icon green">
+                ◎
+            </div>
 
             <span>
                 ROC-AUC
             </span>
 
             <strong>
-
-                {{ "%.4f"|format(
-                    results.auc
-                ) }}
-
+                {{ "%.4f"|format(results.auc) }}
             </strong>
 
         </div>
+
 
     </div>
 
 </section>
 
 
-<!-- ========================================================
+<!-- =========================================================
      CONFUSION MATRIX
-     ======================================================== -->
+========================================================= -->
 
-<section class="card">
+<section class="log-card">
 
-    <h2>
-        Confusion Matrix
-    </h2>
+    <div class="log-card-header">
+
+        <div>
+
+            <span class="log-section-label">
+                CLASSIFICATION RESULTS
+            </span>
+
+            <h2>
+                Confusion Matrix
+            </h2>
+
+            <p>
+                Actual versus predicted yield classes.
+            </p>
+
+        </div>
+
+    </div>
 
 
     {% if results.confusion_matrix %}
 
-    <table>
+    <div class="log-table-wrapper">
 
-        <thead>
+        <table class="log-table">
 
-            <tr>
+            <thead>
 
-                <th>
-                    Actual / Predicted
-                </th>
+                <tr>
 
-                <th>
-                    Low Yield
-                </th>
+                    <th>
+                        Actual / Predicted
+                    </th>
 
-                <th>
-                    High Yield
-                </th>
+                    <th>
+                        Low Yield
+                    </th>
 
-            </tr>
+                    <th>
+                        High Yield
+                    </th>
 
-        </thead>
+                </tr>
 
-
-        <tbody>
-
-            <tr>
-
-                <th>
-                    Low Yield
-                </th>
-
-                <td>
-
-                    {{
-                        results.confusion_matrix[0][0]
-                    }}
-
-                </td>
-
-                <td>
-
-                    {{
-                        results.confusion_matrix[0][1]
-                    }}
-
-                </td>
-
-            </tr>
+            </thead>
 
 
-            <tr>
+            <tbody>
 
-                <th>
-                    High Yield
-                </th>
+                <tr>
 
-                <td>
+                    <th>
+                        Low Yield
+                    </th>
 
-                    {{
-                        results.confusion_matrix[1][0]
-                    }}
+                    <td class="cm-good">
+                        {{ results.confusion_matrix[0][0] }}
+                    </td>
 
-                </td>
+                    <td class="cm-error">
+                        {{ results.confusion_matrix[0][1] }}
+                    </td>
 
-                <td>
+                </tr>
 
-                    {{
-                        results.confusion_matrix[1][1]
-                    }}
 
-                </td>
+                <tr>
 
-            </tr>
+                    <th>
+                        High Yield
+                    </th>
 
-        </tbody>
+                    <td class="cm-error">
+                        {{ results.confusion_matrix[1][0] }}
+                    </td>
 
-    </table>
+                    <td class="cm-good">
+                        {{ results.confusion_matrix[1][1] }}
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
     {% endif %}
 
 </section>
 
 
-<!-- ========================================================
-     COEFFICIENTS
-     ======================================================== -->
+<!-- =========================================================
+     FEATURE COEFFICIENTS
+========================================================= -->
 
-<section class="card">
+<section class="log-card">
 
-    <h2>
-        Feature Coefficients
-    </h2>
+    <div class="log-card-header">
 
+        <div>
 
-    <table>
+            <span class="log-section-label">
+                MODEL PARAMETERS
+            </span>
 
-        <thead>
+            <h2>
+                Feature Coefficients
+            </h2>
 
-            <tr>
+            <p>
+                Logistic Regression coefficients for each feature.
+            </p>
 
-                <th>
-                    Feature
-                </th>
+        </div>
 
-                <th>
-                    Coefficient
-                </th>
-
-            </tr>
-
-        </thead>
+    </div>
 
 
-        <tbody>
+    <div class="log-table-wrapper">
 
-        {% for item in results.coefficients %}
+        <table class="log-table">
 
-            <tr>
+            <thead>
 
-                <td>
-                    {{ item.feature }}
-                </td>
+                <tr>
 
-                <td>
+                    <th>
+                        Feature
+                    </th>
 
-                    {{ "%.6f"|format(
-                        item.coefficient
-                    ) }}
+                    <th>
+                        Coefficient
+                    </th>
 
-                </td>
+                </tr>
 
-            </tr>
+            </thead>
 
-        {% endfor %}
 
-        </tbody>
+            <tbody>
 
-    </table>
+                {% for item in results.coefficients %}
+
+                <tr>
+
+                    <td class="feature-name">
+                        {{ item.feature }}
+                    </td>
+
+                    <td>
+
+                        <span class="
+                            {% if item.coefficient >= 0 %}
+                                coefficient-positive
+                            {% else %}
+                                coefficient-negative
+                            {% endif %}
+                        ">
+
+                            {{ "%.6f"|format(item.coefficient) }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </section>
 
 
-<!-- ========================================================
+<!-- =========================================================
      PREDICTION FORM
-     ======================================================== -->
+========================================================= -->
 
-<section class="card">
+<section class="log-card">
 
-    <h2>
-        Predict Yield Category
-    </h2>
+    <div class="log-card-header">
 
+        <div>
 
-    <p>
+            <span class="log-section-label">
+                LIVE PREDICTION
+            </span>
 
-        Enter the values using the same processed
-        scale as the CSV dataset.
+            <h2>
+                Predict Yield Category
+            </h2>
 
-    </p>
+            <p>
+                Enter processed feature values to classify the crop yield.
+            </p>
+
+        </div>
+
+        <span class="prediction-badge">
+            50% Threshold
+        </span>
+
+    </div>
 
 
     <form
         action="/predict-yield"
         method="POST"
-        class="prediction-form"
-    >
+        class="log-prediction-form">
 
 
-        <div class="form-group">
+        <div class="log-form-group">
 
             <label>
                 Crop Year
@@ -534,7 +677,7 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="log-form-group">
 
             <label>
                 Area
@@ -551,7 +694,7 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="log-form-group">
 
             <label>
                 Annual Rainfall
@@ -568,7 +711,7 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="log-form-group">
 
             <label>
                 Fertilizer
@@ -585,7 +728,7 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="log-form-group">
 
             <label>
                 Pesticide
@@ -604,13 +747,11 @@
 
         <button
             type="submit"
-            class="predict-button"
-        >
+            class="log-predict-button">
 
-            Predict Yield Category
+            🎯 Predict Yield Category
 
         </button>
-
 
     </form>
 
@@ -620,107 +761,129 @@
 {% endif %}
 
 
-<!-- ========================================================
+<!-- =========================================================
      PREDICTION RESULT
-     ======================================================== -->
+========================================================= -->
 
 {% if prediction %}
 
-<section class="card">
+<section class="log-card">
 
+    <div class="log-card-header">
 
-    {% if prediction.label == "High Yield" %}
+        <div>
 
-    <div class="prediction-result high-result">
+            <span class="log-section-label">
+                PREDICTION OUTPUT
+            </span>
 
-    {% else %}
-
-    <div class="prediction-result low-result">
-
-    {% endif %}
-
-
-        <h2>
-            Prediction Result
-        </h2>
-
-
-        <div class="prediction-label">
-
-            {{ prediction.label }}
-
-        </div>
-
-
-        <div class="probability">
-
-            High Yield Probability:
-
-            {{
-                "%.2f"|format(
-                    prediction.probability * 100
-                )
-            }}%
-
-        </div>
-
-
-        <div class="probability">
-
-            Low Yield Probability:
-
-            {{
-                "%.2f"|format(
-                    prediction.low_probability * 100
-                )
-            }}%
-
-        </div>
-
-
-        <div class="threshold">
-
-            Classification Threshold: 50%
+            <h2>
+                Prediction Result
+            </h2>
 
         </div>
 
     </div>
+
+
+    {% if prediction.label == "High Yield" %}
+
+    <div class="log-prediction-result high-result">
+
+        <div class="result-icon">
+            🌱
+        </div>
+
+        <span class="result-status">
+            CLASSIFICATION
+        </span>
+
+        <div class="prediction-label">
+            {{ prediction.label }}
+        </div>
+
+        <div class="probability">
+            High Yield Probability:
+            {{ "%.2f"|format(prediction.probability * 100) }}%
+        </div>
+
+        <div class="probability low-probability">
+            Low Yield Probability:
+            {{ "%.2f"|format(prediction.low_probability * 100) }}%
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="log-prediction-result low-result">
+
+        <div class="result-icon">
+            🌾
+        </div>
+
+        <span class="result-status">
+            CLASSIFICATION
+        </span>
+
+        <div class="prediction-label">
+            {{ prediction.label }}
+        </div>
+
+        <div class="probability">
+            High Yield Probability:
+            {{ "%.2f"|format(prediction.probability * 100) }}%
+        </div>
+
+        <div class="probability low-probability">
+            Low Yield Probability:
+            {{ "%.2f"|format(prediction.low_probability * 100) }}%
+        </div>
+
+    </div>
+
+    {% endif %}
 
 </section>
 
 {% endif %}
 
 
-<!-- ========================================================
-     DOWNLOAD
-     ======================================================== -->
-
-
-
-<!-- ========================================================
+<!-- =========================================================
      EXPLANATION
-     ======================================================== -->
+========================================================= -->
 
-<section class="card">
+<section class="log-card">
 
-    <h2>
-        Why Logistic Regression?
-    </h2>
+    <div class="log-card-header">
+
+        <div>
+
+            <span class="log-section-label">
+                MODEL EXPLANATION
+            </span>
+
+            <h2>
+                Why Logistic Regression?
+            </h2>
+
+        </div>
+
+    </div>
 
 
-    <p>
+    <p class="log-description">
 
-        Logistic Regression is designed for
-        classification problems. Therefore, instead
-        of attempting to predict the exact continuous
-        Yield value, this implementation predicts
-        whether a record belongs to the Low Yield or
-        High Yield class.
+        Logistic Regression is designed for classification
+        problems. Instead of predicting the exact continuous
+        Yield value, this implementation predicts whether a
+        record belongs to the Low Yield or High Yield class.
 
     </p>
 
 
-    <div class="formula">
+    <div class="log-formula probability-formula">
 
         P(High Yield) =
         1 / (1 + e<sup>−z</sup>)
@@ -728,30 +891,16 @@
     </div>
 
 
-    <p>
+    <p class="log-description">
 
         If the predicted probability is at least
-        0.50, the record is classified as
-        <strong>High Yield</strong>. Otherwise,
-        it is classified as <strong>Low Yield</strong>.
+        <strong>0.50</strong>, the record is classified as
+        <strong>High Yield</strong>. Otherwise, it is classified
+        as <strong>Low Yield</strong>.
 
     </p>
 
 </section>
 
 
-</main>
-
-
-<footer>
-
-    Crop Yield Prediction System
-    <br>
-    Logistic Regression
-
-</footer>
-
-
-</body>
-
-</html>
+{% endblock %}

@@ -5,7 +5,14 @@ os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1"
 
-from flask import Flask, render_template, send_file, request
+import os
+
+from flask import (
+    Flask,
+    render_template,
+    send_file,
+    request
+)
 
 from load_data import (
     load_data,
@@ -20,6 +27,7 @@ from crop_preprocessing import (
 from crop_linear_regression import run_crop_linear_regression
 from logistic_regression import train_model, predict_yield
 from trees import run_decision_tree
+from crop_kmeans import run_kmeans
 
 
 app = Flask(__name__)
@@ -39,14 +47,8 @@ def index():
 
     return render_template(
         "index.html",
-        active="none"
+        active="dashboard"
     )
-
-
-# ============================================================
-# DATA LOADING
-# ============================================================
-
 @app.route("/data-loading")
 def data_loading():
 
@@ -54,26 +56,22 @@ def data_loading():
     summary = None
 
     try:
-
         df = load_data()
-
         summary = get_data_summary(df)
 
-    except Exception as e:
-
+    except FileNotFoundError as e:
         error = str(e)
 
+    except Exception as e:
+        error = f"{type(e).__name__}: {str(e)}"
+
     return render_template(
-
-        "index.html",
-
+        "data_loading.html",
         active="data-loading",
-
         summary=summary,
-
         error=error
-
     )
+
 
 
 # ============================================================
@@ -470,6 +468,71 @@ def download_tree_predictions():
 
         download_name="crop_yield_tree_predictions.csv"
 
+    )
+# ============================================================
+# K-MEANS CLUSTERING
+# ============================================================
+@app.route("/kmeans", methods=["GET", "POST"])
+def kmeans_page():
+
+    error = None
+    results = None
+
+    method = "manual"
+    manual_k = 3
+
+    if request.method == "POST":
+
+        method = request.form.get("method", "manual")
+
+        try:
+            manual_k = int(
+                request.form.get("manual_k", 3)
+            )
+        except (ValueError, TypeError):
+            manual_k = 3
+
+        try:
+
+            results = run_kmeans(
+                method=method,
+                manual_k_value=manual_k
+            )
+
+        except Exception as e:
+
+            error = (
+                f"{type(e).__name__}: {str(e)}"
+            )
+
+    return render_template(
+        "kmeans.html",
+        active="kmeans",
+        results=results,
+        error=error,
+        selected_method=method,
+        manual_k=manual_k
+    )
+@app.route("/download-kmeans-predictions")
+def download_kmeans_predictions():
+
+    import os
+
+    file_path = os.path.join(
+        BASE_DIR,
+        "crop_kmeans_predictions.csv"
+    )
+
+    if not os.path.exists(file_path):
+        return (
+            "K-Means predictions file has not been generated yet.",
+            404
+        )
+
+    return send_file(
+        file_path,
+        as_attachment=True,
+        download_name="crop_kmeans_predictions.csv"
     )
 
 
